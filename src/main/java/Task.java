@@ -1,7 +1,7 @@
 public class Task {
 
-    private boolean isDone;
-    private String description;
+    protected boolean isDone;
+    protected String description;
 
     public Task(String description) {
         this.isDone = false;
@@ -25,8 +25,9 @@ public class Task {
     public String getDescription() {
         return this.description;
     }
-    // return string of status and description
-    public String fullDescription() {
+    // return string of status and description as toString()
+    @Override
+    public String toString() {
         return "[" + this.getStatusIcon() + "] " + this.getDescription();
     }
 }

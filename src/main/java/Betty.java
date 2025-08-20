@@ -1,13 +1,27 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Betty {
 
+    private static List<String> list = new ArrayList<>();
     public static void greeting() {
         System.out.println("-----------------------------------");
         System.out.println("Hello! I'm Betty");
         System.out.println("What can I do for you?");
         System.out.println("-----------------------------------");
     }
+
+    public static void displayList() {
+        int count = 1;
+        System.out.println("-----------------------------------");
+        for (String item : list) {
+            System.out.println(count + ". " + item);
+            count++;
+        }
+        System.out.println("-----------------------------------");
+    }
+
     public static void main(String[] args) {
         // Greeting by chatbot
         greeting();
@@ -23,10 +37,13 @@ public class Betty {
                 System.out.println("Bye. Hope to see you again soon!");
                 System.out.println("-----------------------------------");
                 break;
+            } else if (input.equals("list")) {
+                displayList();
             } else {
                 System.out.println("-----------------------------------");
-                System.out.println(input);
+                System.out.println("added: " + input);
                 System.out.println("-----------------------------------");
+                list.add(input);
             }
         }
 

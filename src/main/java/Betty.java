@@ -17,7 +17,7 @@ public class Betty {
         System.out.println("-----------------------------------");
         System.out.println("Here are the tasks in your list");
         for (Task item : list) {
-            System.out.println(count + ". " + item.fullDescription());
+            System.out.println(count + ". " + item.toString());
             count++;
         }
         System.out.println("-----------------------------------");
@@ -28,7 +28,7 @@ public class Betty {
         t.markAsDone();
         System.out.println("-----------------------------------");
         System.out.println("Nice! I've marked this task as done:");
-        System.out.println(t.fullDescription());
+        System.out.println(t.toString());
         System.out.println("-----------------------------------");
     }
     // Unmark task as not done
@@ -37,14 +37,40 @@ public class Betty {
         t.markUndone();
         System.out.println("-----------------------------------");
         System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(t.fullDescription());
+        System.out.println(t.toString());
         System.out.println("-----------------------------------");
+    }
+    // String for add task
+    public static void addTask(Task task) {
+        list.add(task);
+        System.out.println("-----------------------------------");
+        System.out.println("Got it. I've added this task: ");
+        System.out.println("  " + task.toString());
+        System.out.println("Now you have " + list.size() + " tasks in the list.");
+        System.out.println("-----------------------------------");
+    }
+    // Add task todo
+    public static void addTodo(String args) {
+        addTask(new Todo(args));
+    }
+    // Add deadline
+    public static void addDeadline(String args) {
+        String[] arguments = args.split("/by ", 2);
+        addTask(new Deadline(arguments[0], arguments[1]));
+    }
+    // Add event
+    public static void addEvent(String args) {
+        String[] arguments = args.split("/from ", 2);
+        String description = arguments[0];
+        String[] time = arguments[1].split(" /to ", 2);
+        String from = time[0];
+        String to = time[1];
+        addTask(new Event(description, from, to));
     }
 
     public static void main(String[] args) {
         // Greeting by chatbot
         greeting();
-
         // Create scanner to take input by user
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -52,7 +78,7 @@ public class Betty {
             String input = scanner.nextLine();
             // Listen for 2 argument
             String[] arguments = input.split(" ", 2);
-            // First string is the command
+            // First string is the type of command
             String first = arguments[0];
             // Second string, if present, is the number in list
             String second = arguments.length > 1 ? arguments[1] : "";
@@ -69,6 +95,12 @@ public class Betty {
                 markDone(Integer.parseInt(second) - 1);
             } else if (first.equals("unmark")) {
                 markUndone(Integer.parseInt(second) - 1);
+            } else if (first.equals("todo")) {
+                addTodo(second);
+            } else if (first.equals("deadline")) {
+                addDeadline(second);
+            } else if (first.equals("event")) {
+                addEvent(second);
             } else {
                 System.out.println("-----------------------------------");
                 System.out.println("added: " + input);
@@ -76,7 +108,5 @@ public class Betty {
                 list.add(new Task(input));
             }
         }
-
-
     }
 }

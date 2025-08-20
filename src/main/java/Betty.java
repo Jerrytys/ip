@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Betty {
 
-    private static List<String> list = new ArrayList<>();
+    private static List<Task> list = new ArrayList<>();
     public static void greeting() {
         System.out.println("-----------------------------------");
         System.out.println("Hello! I'm Betty");
@@ -15,8 +15,11 @@ public class Betty {
     public static void displayList() {
         int count = 1;
         System.out.println("-----------------------------------");
-        for (String item : list) {
-            System.out.println(count + ". " + item);
+        System.out.println("Here are the tasks in your list");
+        for (Task item : list) {
+            System.out.println(count + ". "
+                                + "[" + item.getStatusIcon()
+                                + "] " + item.getDescription());
             count++;
         }
         System.out.println("-----------------------------------");
@@ -43,7 +46,7 @@ public class Betty {
                 System.out.println("-----------------------------------");
                 System.out.println("added: " + input);
                 System.out.println("-----------------------------------");
-                list.add(input);
+                list.add(new Task(input));
             }
         }
 

@@ -17,4 +17,9 @@ public class Task {
     public void completeTask() {
         this.isDone = true;
     }
+
+    // getter for description
+    public String getDescription() {
+        return this.description;
+    }
 }

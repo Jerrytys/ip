@@ -13,13 +13,20 @@ public class Task {
         return this.isDone ? "X" : " ";
     }
 
-    // mark task as done
-    public void completeTask() {
+    // Mark task as done
+    public void markAsDone() {
         this.isDone = true;
     }
-
+    // Mark task as not done
+    public void markUndone() {
+        this.isDone = false;
+    }
     // getter for description
     public String getDescription() {
         return this.description;
+    }
+    // return string of status and description
+    public String fullDescription() {
+        return "[" + this.getStatusIcon() + "] " + this.getDescription();
     }
 }

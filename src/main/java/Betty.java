@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.SplittableRandom;
 
 public class Betty {
 
@@ -80,7 +81,16 @@ public class Betty {
         String to = time[1];
         addTask(new Event(description, from, to));
     }
-
+    // Delete task
+    public static void deleteTask(int number) {
+        Task task = list.get(number);
+        list.remove(number);
+        StringBuilder message = new StringBuilder();
+        message.append("Noted, I've removed this task:\n")
+                .append("  " + task.toString())
+                .append("\nNow you have " + list.size() + " tasks in the list.");
+        printBox(String.valueOf(message));
+    }
     public static void main(String[] args) throws InvalidFormatException {
         // Greeting by chatbot
         greeting();
@@ -113,6 +123,8 @@ public class Betty {
                     addDeadline(second);
                 } else if (first.equals("event")) {
                     addEvent(second);
+                } else if (first.equals("delete")) {
+                    deleteTask(Integer.parseInt(second) - 1);
                 } else {
                     throw new UnknownCommandException();
                 }

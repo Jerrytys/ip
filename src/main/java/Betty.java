@@ -5,61 +5,74 @@ import java.util.Scanner;
 public class Betty {
 
     private static List<Task> list = new ArrayList<>();
-    public static void greeting() {
+    // Helper function to print the chat messages
+    public static void printBox(String message) {
         System.out.println("-----------------------------------");
-        System.out.println("Hello! I'm Betty");
-        System.out.println("What can I do for you?");
+        System.out.println(message);
         System.out.println("-----------------------------------");
     }
 
+    public static void greeting() {
+        printBox("Hello! I'm Betty\nWhat can I do for you?");
+    }
+    // Displays the list of tasks
     public static void displayList() {
         int count = 1;
-        System.out.println("-----------------------------------");
-        System.out.println("Here are the tasks in your list");
+        StringBuilder message = new StringBuilder();
         for (Task item : list) {
-            System.out.println(count + ". " + item.toString());
+            message.append(count).append(". ").append(item.toString()).append("\n");
             count++;
         }
-        System.out.println("-----------------------------------");
+        printBox(String.valueOf(message));
     }
     // Mark task as done
     public static void markDone(int number) {
         Task t = list.get(number);
         t.markAsDone();
-        System.out.println("-----------------------------------");
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(t.toString());
-        System.out.println("-----------------------------------");
+        printBox("Nice! I've marked this task as done:\n" + t.toString());
     }
     // Unmark task as not done
     public static void markUndone(int number) {
         Task t = list.get(number);
         t.markUndone();
-        System.out.println("-----------------------------------");
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(t.toString());
-        System.out.println("-----------------------------------");
+        printBox("OK, I've marked this task as not done yet:\n" + t.toString());
     }
     // String for add task
     public static void addTask(Task task) {
         list.add(task);
-        System.out.println("-----------------------------------");
-        System.out.println("Got it. I've added this task: ");
-        System.out.println("  " + task.toString());
-        System.out.println("Now you have " + list.size() + " tasks in the list.");
-        System.out.println("-----------------------------------");
+        printBox("Got it. I've added this task: \n" +
+                "  " + task.toString() +
+                "\nNow you have " + list.size() + " tasks in the list.");
     }
-    // Add task todo
-    public static void addTodo(String args) {
+    // Add task todo with exception
+    public static void addTodo(String args) throws NoDescriptionException {
+        if (args.isEmpty()) {
+            throw new NoDescriptionException("todo");
+        }
         addTask(new Todo(args));
     }
     // Add deadline
-    public static void addDeadline(String args) {
+    public static void addDeadline(String args) throws NoDescriptionException, InvalidFormatException {
+        if (args.isEmpty()) {
+            throw new NoDescriptionException("deadline");
+        }
+        if (!args.contains("/by ")) {
+            throw new InvalidFormatException("deadline must have a /by <time>");
+        }
         String[] arguments = args.split("/by ", 2);
         addTask(new Deadline(arguments[0], arguments[1]));
     }
     // Add event
-    public static void addEvent(String args) {
+    public static void addEvent(String args) throws NoDescriptionException, InvalidFormatException {
+        if (args.isEmpty()) {
+            throw new NoDescriptionException("event");
+        }
+        if (!args.contains("/from ")) {
+            throw new InvalidFormatException("event must have a /from <time>");
+        }
+        if (!args.contains("/to ")) {
+            throw new InvalidFormatException(("event must have a /to <time>"));
+        }
         String[] arguments = args.split("/from ", 2);
         String description = arguments[0];
         String[] time = arguments[1].split(" /to ", 2);
@@ -68,7 +81,7 @@ public class Betty {
         addTask(new Event(description, from, to));
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidFormatException {
         // Greeting by chatbot
         greeting();
         // Create scanner to take input by user
@@ -83,29 +96,30 @@ public class Betty {
             // Second string, if present, is the number in list
             String second = arguments.length > 1 ? arguments[1] : "";
 
-            // Break when condition "bye" is met
-            if (input.equals("bye")) {
-                System.out.println("-----------------------------------");
-                System.out.println("Bye. Hope to see you again soon!");
-                System.out.println("-----------------------------------");
-                break;
-            } else if (input.equals("list")) {
-                displayList();
-            } else if (first.equals("mark")) {
-                markDone(Integer.parseInt(second) - 1);
-            } else if (first.equals("unmark")) {
-                markUndone(Integer.parseInt(second) - 1);
-            } else if (first.equals("todo")) {
-                addTodo(second);
-            } else if (first.equals("deadline")) {
-                addDeadline(second);
-            } else if (first.equals("event")) {
-                addEvent(second);
-            } else {
-                System.out.println("-----------------------------------");
-                System.out.println("added: " + input);
-                System.out.println("-----------------------------------");
-                list.add(new Task(input));
+            // Break when condition "bye" is met, using try catch block for exception
+            try {
+                if (input.equals("bye")) {
+                    printBox("Bye. Hope to see you again soon!");
+                    break;
+                } else if (input.equals("list")) {
+                    displayList();
+                } else if (first.equals("mark")) {
+                    markDone(Integer.parseInt(second) - 1);
+                } else if (first.equals("unmark")) {
+                    markUndone(Integer.parseInt(second) - 1);
+                } else if (first.equals("todo")) {
+                    addTodo(second);
+                } else if (first.equals("deadline")) {
+                    addDeadline(second);
+                } else if (first.equals("event")) {
+                    addEvent(second);
+                } else {
+                    throw new UnknownCommandException();
+                }
+            } catch (UnknownCommandException | NoDescriptionException | InvalidFormatException e) {
+                printBox(e.getMessage());
+            } catch (IndexOutOfBoundsException e) {
+                printBox("Task number does not exist");
             }
         }
     }

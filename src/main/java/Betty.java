@@ -106,27 +106,38 @@ public class Betty {
             // Second string, if present, is the number in list
             String second = arguments.length > 1 ? arguments[1] : "";
 
-            // Break when condition "bye" is met, using try catch block for exception
+            // Convert to command in enum class Command
+            Command command = Command.fromString(first);
+
+            // Switch case using enums
             try {
-                if (input.equals("bye")) {
-                    printBox("Bye. Hope to see you again soon!");
-                    break;
-                } else if (input.equals("list")) {
-                    displayList();
-                } else if (first.equals("mark")) {
-                    markDone(Integer.parseInt(second) - 1);
-                } else if (first.equals("unmark")) {
-                    markUndone(Integer.parseInt(second) - 1);
-                } else if (first.equals("todo")) {
-                    addTodo(second);
-                } else if (first.equals("deadline")) {
-                    addDeadline(second);
-                } else if (first.equals("event")) {
-                    addEvent(second);
-                } else if (first.equals("delete")) {
-                    deleteTask(Integer.parseInt(second) - 1);
-                } else {
-                    throw new UnknownCommandException();
+                switch (command) {
+                    case BYE:
+                        printBox("Bye. Hope to see you again soon!");
+                        break;
+                    case LIST:
+                        displayList();
+                        break;
+                    case MARK:
+                        markDone(Integer.parseInt(second) - 1);
+                        break;
+                    case UNMARK:
+                        markUndone(Integer.parseInt(second) - 1);
+                        break;
+                    case TODO:
+                        addTodo(second);
+                        break;
+                    case DEADLINE:
+                        addDeadline(second);
+                        break;
+                    case EVENT:
+                        addEvent(second);
+                        break;
+                    case DELETE:
+                        deleteTask(Integer.parseInt(second) - 1);
+                        break;
+                    default:
+                        throw new UnknownCommandException();
                 }
             } catch (UnknownCommandException | NoDescriptionException | InvalidFormatException e) {
                 printBox(e.getMessage());

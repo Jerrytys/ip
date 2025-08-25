@@ -114,7 +114,8 @@ public class Betty {
                 switch (command) {
                     case BYE:
                         printBox("Bye. Hope to see you again soon!");
-                        break;
+                        // stops program from running instead of repeating loop
+                        return;
                     case LIST:
                         displayList();
                         break;

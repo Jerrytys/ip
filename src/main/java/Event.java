@@ -17,7 +17,7 @@ public class Event extends Task {
     public String toString() {
         // Format time to pattern MMM dd yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
-        return "[E]" + super.toString() + " (from: " + this.from.format(dateFormat) +
-                " to: " + this.to.format(dateFormat) + ")";
+        return "E | " + super.toString() + " | (from: " + this.from.format(dateFormat) +
+                " | to: " + this.to.format(dateFormat) + ")";
     }
 }

@@ -3,7 +3,7 @@ public class Parser {
     public static Task parse(String taskString) {
         // Create parsing for different cases of task
         String[] arguments = taskString.split(" \\| ", 5);
-        String type = "";
+        String type = arguments[0];
         String completed = "0";
         String description = "";
         String deadline;
@@ -27,9 +27,8 @@ public class Parser {
                 to = arguments[4];
                 return new Event(description, from, to);
             default:
-               // TODO: THROW ERROR  
+               // TODO: THROW ERROR
         }
-
 
     }
 }

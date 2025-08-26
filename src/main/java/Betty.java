@@ -47,21 +47,30 @@ public class Betty {
         printBox("OK, I've marked this task as not done yet:\n" + t.toString());
     }
     // String for add task
-    public static void addTask(Task task) {
-        list.add(task);
+    public static void addTask(Task task, File TaskFile) {
+        long taskNumber = 0;
+        try {
+            FileWriter fw = new FileWriter(TaskFile.getPath(), true);
+            fw.write(task.toString() + "\n");
+            fw.close();
+            taskNumber = Files.lines(Path.of(TaskFile.getPath())).count();
+        } catch (IOException e) {
+            System.out.println("Error occurred: " + e.getMessage());
+        }
+        
         printBox("Got it. I've added this task: \n" +
                 "  " + task.toString() +
-                "\nNow you have " + list.size() + " tasks in the list.");
+                "\nNow you have " + taskNumber + " tasks in the list.");
     }
     // Add task todo with exception
-    public static void addTodo(String args) throws NoDescriptionException {
+    public static void addTodo(String args, File TaskFile) throws NoDescriptionException {
         if (args.isEmpty()) {
             throw new NoDescriptionException("todo");
         }
-        addTask(new Todo(args));
+        addTask(new Todo(args), TaskFile);
     }
     // Add deadline
-    public static void addDeadline(String args) throws NoDescriptionException, InvalidFormatException {
+    public static void addDeadline(String args, File TaskFile) throws NoDescriptionException, InvalidFormatException {
         if (args.isEmpty()) {
             throw new NoDescriptionException("deadline");
         }
@@ -69,10 +78,10 @@ public class Betty {
             throw new InvalidFormatException("deadline must have a /by <time>");
         }
         String[] arguments = args.split("/by ", 2);
-        addTask(new Deadline(arguments[0], arguments[1]));
+        addTask(new Deadline(arguments[0], arguments[1]), TaskFile);
     }
     // Add event
-    public static void addEvent(String args) throws NoDescriptionException, InvalidFormatException {
+    public static void addEvent(String args, File TaskFile) throws NoDescriptionException, InvalidFormatException {
         if (args.isEmpty()) {
             throw new NoDescriptionException("event");
         }
@@ -87,7 +96,7 @@ public class Betty {
         String[] time = arguments[1].split(" /to ", 2);
         String from = time[0];
         String to = time[1];
-        addTask(new Event(description, from, to));
+        addTask(new Event(description, from, to), TaskFile);
     }
     // Delete task
     public static void deleteTask(int number) {
@@ -155,13 +164,13 @@ public class Betty {
                         markUndone(Integer.parseInt(second) - 1);
                         break;
                     case TODO:
-                        addTodo(second);
+                        addTodo(second, TaskFile);
                         break;
                     case DEADLINE:
-                        addDeadline(second);
+                        addDeadline(second, TaskFile);
                         break;
                     case EVENT:
-                        addEvent(second);
+                        addEvent(second, TaskFile);
                         break;
                     case DELETE:
                         deleteTask(Integer.parseInt(second) - 1);

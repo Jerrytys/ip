@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,5 +49,15 @@ public class Storage {
         }
 
         return taskList;
+    }
+    // Function to store a taskList into your data list
+    public void store(TaskList taskList) {
+        try {
+            FileWriter fw = new FileWriter(filePath);
+            fw.write(taskList.toString());
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("Error occurred: " + e.getMessage());
+        }
     }
 }

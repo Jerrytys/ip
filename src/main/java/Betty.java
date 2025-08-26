@@ -13,34 +13,21 @@ public class Betty {
     private TaskList taskList;
     private Storage storage;
 
-    private static List<Task> list = new ArrayList<>();
-
-
-
-    // Get file from hard disk
-    public static File getFile(String path) {
-        File myFile = new File(path);
+    public Betty(String filePath) {
+        this.ui = new Ui();
+        this.storage = new Storage(filePath);
         try {
-            // Create directories if not present
-            File parent = myFile.getParentFile();
-            if (parent != null && !parent.exists()) {
-                parent.mkdirs();
-            }
-            // If file does not exist, create a new file
-            if (!myFile.exists()) {
-                myFile.createNewFile();
-            }
-        } catch (IOException e) {
+            // Loads storage data file to taskList
+            this.taskList = new TaskList(storage.load());
+        } catch (Exception e) {
             System.out.println("Error occurred: " + e.getMessage());
+            this.taskList = new TaskList();
         }
-        return myFile;
     }
-
-    public static void main(String[] args) throws InvalidFormatException {
+    // Run the Betty bot object
+    public void run() {
         // Greeting by chatbot
-        greeting();
-        // Create/Access file that stored Tasks
-        File TaskFile = getFile("./data/Betty.txt");
+        ui.greeting();
         // Create scanner to take input by user
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -60,38 +47,49 @@ public class Betty {
             try {
                 switch (command) {
                     case BYE:
-                        printBox("Bye. Hope to see you again soon!");
+                        // store TaskList into storage
+                        storage.store(this.taskList);
+                        ui.goodbye();
                         // stops program from running instead of repeating loop
                         return;
                     case LIST:
-                        displayList(TaskFile);
+                        ui.displayList(this.taskList);
                         break;
                     case MARK:
-                        markDone(Integer.parseInt(second) - 1);
+                        int number = Integer.parseInt(second) - 1;
+                        this.taskList.markDone(number);
+                        ui.markDone(taskList, number)
                         break;
                     case UNMARK:
-                        markUndone(Integer.parseInt(second) - 1);
+                        this.taskList.markUndone(Integer.parseInt(second) - 1);
                         break;
                     case TODO:
-                        addTodo(second, TaskFile);
+                        this.taskList.addTodo(second);
+                        ui.addTask(taskList);
                         break;
                     case DEADLINE:
-                        addDeadline(second, TaskFile);
+                        this.taskList.addDeadline(second);
+                        ui.addTask(taskList);
                         break;
                     case EVENT:
-                        addEvent(second, TaskFile);
+                        this.taskList.addEvent(second);
+                        ui.addTask(taskList);
                         break;
                     case DELETE:
-                        deleteTask(Integer.parseInt(second) - 1);
+                        taskList.deleteTask(Integer.parseInt(second) - 1);
                         break;
                     default:
                         throw new UnknownCommandException();
                 }
             } catch (UnknownCommandException | NoDescriptionException | InvalidFormatException e) {
-                printBox(e.getMessage());
+                ui.printBox(e.getMessage());
             } catch (IndexOutOfBoundsException e) {
-                printBox("Task number does not exist");
+                ui.printBox("Task number does not exist");
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new Betty("./data/Betty.txt").run();
     }
 }

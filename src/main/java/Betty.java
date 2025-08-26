@@ -1,7 +1,12 @@
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.SplittableRandom;
 
 public class Betty {
 
@@ -91,6 +96,19 @@ public class Betty {
                 .append("\nNow you have " + list.size() + " tasks in the list.");
         printBox(String.valueOf(message));
     }
+    // Get file from hard disk
+    public static File getFile(String path) {
+        File myFile = new File(path);
+        try {
+            if (!myFile.exists()) {
+                myFile.createNewFile();
+            }
+        } catch (IOException e) {
+            System.out.println("Error occurred: " + e.getMessage());
+        }
+        return myFile;
+    }
+
     public static void main(String[] args) throws InvalidFormatException {
         // Greeting by chatbot
         greeting();

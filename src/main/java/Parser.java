@@ -9,7 +9,7 @@ public class Parser {
         String deadline;
         String to;
         String from;
-        
+
         switch (type) {
             case "T":
                 completed = arguments[1];

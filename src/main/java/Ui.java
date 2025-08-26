@@ -1,7 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
 public class Ui {
 
     // Helper function to print the chat messages
@@ -29,7 +25,7 @@ public class Ui {
                 "  " + taskList.get(taskList.size() - 1 ).toString() +
                 "\nNow you have " + taskList.size() + " tasks in the list.");
     }
-    public void deleteTask(String message, Task task, TaskList taskList) {
+    public void deleteTask(Task task, TaskList taskList) {
         StringBuilder deleteMessage = new StringBuilder();
         deleteMessage.append("Noted, I've removed this task:\n")
                         .append(task.toString())

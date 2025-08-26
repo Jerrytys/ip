@@ -1,10 +1,3 @@
-import java.io.*;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Betty {
@@ -58,7 +51,7 @@ public class Betty {
                     case MARK:
                         int number = Integer.parseInt(second) - 1;
                         this.taskList.markDone(number);
-                        ui.markDone(taskList, number)
+                        ui.markDone(taskList, number);
                         break;
                     case UNMARK:
                         this.taskList.markUndone(Integer.parseInt(second) - 1);
@@ -86,6 +79,7 @@ public class Betty {
             } catch (IndexOutOfBoundsException e) {
                 ui.printBox("Task number does not exist");
             }
+            storage.store(this.taskList);
         }
     }
 

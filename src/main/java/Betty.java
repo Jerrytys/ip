@@ -100,6 +100,12 @@ public class Betty {
     public static File getFile(String path) {
         File myFile = new File(path);
         try {
+            // Create directories if not present
+            File parent = myFile.getParentFile();
+            if (parent != null && !parent.exists()) {
+                parent.mkdirs();
+            }
+            // If file does not exist, create a new file
             if (!myFile.exists()) {
                 myFile.createNewFile();
             }
@@ -112,6 +118,8 @@ public class Betty {
     public static void main(String[] args) throws InvalidFormatException {
         // Greeting by chatbot
         greeting();
+        // Create/Access file that stored Tasks
+        File TaskFile = getFile("./data/Betty.txt");
         // Create scanner to take input by user
         Scanner scanner = new Scanner(System.in);
         while (true) {

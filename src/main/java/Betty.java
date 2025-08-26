@@ -9,105 +9,14 @@ import java.util.Scanner;
 
 public class Betty {
 
-    private static List<Task> list = new ArrayList<>();
-    // Helper function to print the chat messages
-    public static void printBox(String message) {
-        System.out.println("-----------------------------------");
-        System.out.println(message);
-        System.out.println("-----------------------------------");
-    }
+    private Ui ui;
+    private TaskList taskList;
+    private Storage storage;
 
-    public static void greeting() {
-        printBox("Hello! I'm Betty\nWhat can I do for you?");
-    }
-    // Displays the list of tasks
-    public static void displayList(File TaskFile) {
-        int count = 1;
-        StringBuilder message = new StringBuilder();
-        try {
-            Scanner scanner = new Scanner(TaskFile);
-            while (scanner.hasNextLine()) {
-                message.append(scanner.nextLine() + "\n");
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + e.getMessage());
-        }
-        printBox(String.valueOf(message));
-    }
-    // Mark task as done
-    public static void markDone(int number) {
-        Task t = list.get(number);
-        t.markAsDone();
-        printBox("Nice! I've marked this task as done:\n" + t.toString());
-    }
-    // Unmark task as not done
-    public static void markUndone(int number) {
-        Task t = list.get(number);
-        t.markUndone();
-        printBox("OK, I've marked this task as not done yet:\n" + t.toString());
-    }
-    // String for add task
-    public static void addTask(Task task, File TaskFile) {
-        long taskNumber = 0;
-        try {
-            FileWriter fw = new FileWriter(TaskFile.getPath(), true);
-            fw.write(task.toString() + "\n");
-            fw.close();
-            taskNumber = Files.lines(Path.of(TaskFile.getPath())).count();
-        } catch (IOException e) {
-            System.out.println("Error occurred: " + e.getMessage());
-        }
-        
-        printBox("Got it. I've added this task: \n" +
-                "  " + task.toString() +
-                "\nNow you have " + taskNumber + " tasks in the list.");
-    }
-    // Add task todo with exception
-    public static void addTodo(String args, File TaskFile) throws NoDescriptionException {
-        if (args.isEmpty()) {
-            throw new NoDescriptionException("todo");
-        }
-        addTask(new Todo(args), TaskFile);
-    }
-    // Add deadline
-    public static void addDeadline(String args, File TaskFile) throws NoDescriptionException, InvalidFormatException {
-        if (args.isEmpty()) {
-            throw new NoDescriptionException("deadline");
-        }
-        if (!args.contains("/by ")) {
-            throw new InvalidFormatException("deadline must have a /by <time>");
-        }
-        String[] arguments = args.split("/by ", 2);
-        addTask(new Deadline(arguments[0], arguments[1]), TaskFile);
-    }
-    // Add event
-    public static void addEvent(String args, File TaskFile) throws NoDescriptionException, InvalidFormatException {
-        if (args.isEmpty()) {
-            throw new NoDescriptionException("event");
-        }
-        if (!args.contains("/from ")) {
-            throw new InvalidFormatException("event must have a /from <time>");
-        }
-        if (!args.contains("/to ")) {
-            throw new InvalidFormatException(("event must have a /to <time>"));
-        }
-        String[] arguments = args.split("/from ", 2);
-        String description = arguments[0];
-        String[] time = arguments[1].split(" /to ", 2);
-        String from = time[0];
-        String to = time[1];
-        addTask(new Event(description, from, to), TaskFile);
-    }
-    // Delete task
-    public static void deleteTask(int number) {
-        Task task = list.get(number);
-        list.remove(number);
-        StringBuilder message = new StringBuilder();
-        message.append("Noted, I've removed this task:\n")
-                .append("  " + task.toString())
-                .append("\nNow you have " + list.size() + " tasks in the list.");
-        printBox(String.valueOf(message));
-    }
+    private static List<Task> list = new ArrayList<>();
+
+
+
     // Get file from hard disk
     public static File getFile(String path) {
         File myFile = new File(path);

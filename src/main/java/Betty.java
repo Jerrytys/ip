@@ -1,7 +1,11 @@
+import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.SplittableRandom;
 
 public class Betty {
 
@@ -17,12 +21,16 @@ public class Betty {
         printBox("Hello! I'm Betty\nWhat can I do for you?");
     }
     // Displays the list of tasks
-    public static void displayList() {
+    public static void displayList(File TaskFile) {
         int count = 1;
         StringBuilder message = new StringBuilder();
-        for (Task item : list) {
-            message.append(count).append(". ").append(item.toString()).append("\n");
-            count++;
+        try {
+            Scanner scanner = new Scanner(TaskFile);
+            while (scanner.hasNextLine()) {
+                message.append(scanner.nextLine() + "\n");
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + e.getMessage());
         }
         printBox(String.valueOf(message));
     }
@@ -39,21 +47,30 @@ public class Betty {
         printBox("OK, I've marked this task as not done yet:\n" + t.toString());
     }
     // String for add task
-    public static void addTask(Task task) {
-        list.add(task);
+    public static void addTask(Task task, File TaskFile) {
+        long taskNumber = 0;
+        try {
+            FileWriter fw = new FileWriter(TaskFile.getPath(), true);
+            fw.write(task.toString() + "\n");
+            fw.close();
+            taskNumber = Files.lines(Path.of(TaskFile.getPath())).count();
+        } catch (IOException e) {
+            System.out.println("Error occurred: " + e.getMessage());
+        }
+        
         printBox("Got it. I've added this task: \n" +
                 "  " + task.toString() +
-                "\nNow you have " + list.size() + " tasks in the list.");
+                "\nNow you have " + taskNumber + " tasks in the list.");
     }
     // Add task todo with exception
-    public static void addTodo(String args) throws NoDescriptionException {
+    public static void addTodo(String args, File TaskFile) throws NoDescriptionException {
         if (args.isEmpty()) {
             throw new NoDescriptionException("todo");
         }
-        addTask(new Todo(args));
+        addTask(new Todo(args), TaskFile);
     }
     // Add deadline
-    public static void addDeadline(String args) throws NoDescriptionException, InvalidFormatException {
+    public static void addDeadline(String args, File TaskFile) throws NoDescriptionException, InvalidFormatException {
         if (args.isEmpty()) {
             throw new NoDescriptionException("deadline");
         }
@@ -61,10 +78,10 @@ public class Betty {
             throw new InvalidFormatException("deadline must have a /by <time>");
         }
         String[] arguments = args.split("/by ", 2);
-        addTask(new Deadline(arguments[0], arguments[1]));
+        addTask(new Deadline(arguments[0], arguments[1]), TaskFile);
     }
     // Add event
-    public static void addEvent(String args) throws NoDescriptionException, InvalidFormatException {
+    public static void addEvent(String args, File TaskFile) throws NoDescriptionException, InvalidFormatException {
         if (args.isEmpty()) {
             throw new NoDescriptionException("event");
         }
@@ -79,7 +96,7 @@ public class Betty {
         String[] time = arguments[1].split(" /to ", 2);
         String from = time[0];
         String to = time[1];
-        addTask(new Event(description, from, to));
+        addTask(new Event(description, from, to), TaskFile);
     }
     // Delete task
     public static void deleteTask(int number) {
@@ -91,9 +108,30 @@ public class Betty {
                 .append("\nNow you have " + list.size() + " tasks in the list.");
         printBox(String.valueOf(message));
     }
+    // Get file from hard disk
+    public static File getFile(String path) {
+        File myFile = new File(path);
+        try {
+            // Create directories if not present
+            File parent = myFile.getParentFile();
+            if (parent != null && !parent.exists()) {
+                parent.mkdirs();
+            }
+            // If file does not exist, create a new file
+            if (!myFile.exists()) {
+                myFile.createNewFile();
+            }
+        } catch (IOException e) {
+            System.out.println("Error occurred: " + e.getMessage());
+        }
+        return myFile;
+    }
+
     public static void main(String[] args) throws InvalidFormatException {
         // Greeting by chatbot
         greeting();
+        // Create/Access file that stored Tasks
+        File TaskFile = getFile("./data/Betty.txt");
         // Create scanner to take input by user
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -117,7 +155,7 @@ public class Betty {
                         // stops program from running instead of repeating loop
                         return;
                     case LIST:
-                        displayList();
+                        displayList(TaskFile);
                         break;
                     case MARK:
                         markDone(Integer.parseInt(second) - 1);
@@ -126,13 +164,13 @@ public class Betty {
                         markUndone(Integer.parseInt(second) - 1);
                         break;
                     case TODO:
-                        addTodo(second);
+                        addTodo(second, TaskFile);
                         break;
                     case DEADLINE:
-                        addDeadline(second);
+                        addDeadline(second, TaskFile);
                         break;
                     case EVENT:
-                        addEvent(second);
+                        addEvent(second, TaskFile);
                         break;
                     case DELETE:
                         deleteTask(Integer.parseInt(second) - 1);

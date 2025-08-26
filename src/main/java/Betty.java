@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,12 +21,16 @@ public class Betty {
         printBox("Hello! I'm Betty\nWhat can I do for you?");
     }
     // Displays the list of tasks
-    public static void displayList() {
+    public static void displayList(File TaskFile) {
         int count = 1;
         StringBuilder message = new StringBuilder();
-        for (Task item : list) {
-            message.append(count).append(". ").append(item.toString()).append("\n");
-            count++;
+        try {
+            Scanner scanner = new Scanner(TaskFile);
+            while (scanner.hasNextLine()) {
+                message.append(scanner.nextLine() + "\n");
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + e.getMessage());
         }
         printBox(String.valueOf(message));
     }
@@ -143,7 +146,7 @@ public class Betty {
                         // stops program from running instead of repeating loop
                         return;
                     case LIST:
-                        displayList();
+                        displayList(TaskFile);
                         break;
                     case MARK:
                         markDone(Integer.parseInt(second) - 1);

@@ -41,7 +41,7 @@ public class Storage {
             Scanner scanner = new Scanner(this.taskFile);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                Task task = Parser.parse(line);
+                Task task = Parser.parseTask(line);
                 taskList.add(task);
             }
         } catch (Exception e) {

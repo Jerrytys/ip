@@ -1,6 +1,6 @@
 public class Parser {
 
-    public static Task parse(String taskString) {
+    public static Task parseTask(String taskString) {
         // Create parsing for different cases of task
         String[] arguments = taskString.split(" \\| ", 5);
         String type = arguments[0];

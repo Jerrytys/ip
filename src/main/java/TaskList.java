@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskList {
@@ -6,6 +7,10 @@ public class TaskList {
 
     public TaskList(List<Task> taskList) {
         this.taskList = taskList;
+    }
+
+    public TaskList() {
+        this.taskList = new ArrayList<>();
     }
 
     public void addTask(Task task) {

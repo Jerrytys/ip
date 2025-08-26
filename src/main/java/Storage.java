@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Storage {
 
@@ -28,5 +31,22 @@ public class Storage {
             System.out.println("Error occurred: " + e.getMessage());
         }
         return myFile;
+    }
+
+    public List<Task> load() {
+        List<Task> taskList = new ArrayList<>();
+        // Use scanner to read file and parse each line to become a task object
+        try {
+            Scanner scanner = new Scanner(this.taskFile);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                Task task = Parser.parse(line);
+                taskList.add(task);
+            }
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+        }
+
+        return taskList;
     }
 }

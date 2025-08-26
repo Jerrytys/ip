@@ -9,7 +9,7 @@ public class Parser {
         String deadline;
         String to;
         String from;
-
+        
         switch (type) {
             case "T":
                 completed = arguments[1];
@@ -28,6 +28,7 @@ public class Parser {
                 return new Event(description, from, to);
             default:
                // TODO: THROW ERROR
+                throw new IllegalArgumentException("Unknown task type spotted in file: " + type);
         }
 
     }

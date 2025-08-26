@@ -1,3 +1,5 @@
+package betty;
+
 public enum Command {
     BYE,
     LIST,

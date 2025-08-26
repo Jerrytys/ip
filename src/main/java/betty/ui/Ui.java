@@ -1,3 +1,8 @@
+package betty.ui;
+
+import betty.task.Task;
+import betty.task.TaskList;
+
 public class Ui {
 
     // Helper function to print the chat messages

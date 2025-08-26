@@ -1,3 +1,5 @@
+package betty;
+
 public class NoDescriptionException extends Exception{
 
     public NoDescriptionException(String task) {

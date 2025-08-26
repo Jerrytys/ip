@@ -1,3 +1,5 @@
+package betty.task;
+
 public class Task {
 
     protected boolean isDone;

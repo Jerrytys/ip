@@ -1,137 +1,26 @@
-import java.io.*;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Betty {
 
-    private static List<Task> list = new ArrayList<>();
-    // Helper function to print the chat messages
-    public static void printBox(String message) {
-        System.out.println("-----------------------------------");
-        System.out.println(message);
-        System.out.println("-----------------------------------");
-    }
+    private Ui ui;
+    private TaskList taskList;
+    private Storage storage;
 
-    public static void greeting() {
-        printBox("Hello! I'm Betty\nWhat can I do for you?");
-    }
-    // Displays the list of tasks
-    public static void displayList(File TaskFile) {
-        int count = 1;
-        StringBuilder message = new StringBuilder();
+    public Betty(String filePath) {
+        this.ui = new Ui();
+        this.storage = new Storage(filePath);
         try {
-            Scanner scanner = new Scanner(TaskFile);
-            while (scanner.hasNextLine()) {
-                message.append(scanner.nextLine() + "\n");
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + e.getMessage());
-        }
-        printBox(String.valueOf(message));
-    }
-    // Mark task as done
-    public static void markDone(int number) {
-        Task t = list.get(number);
-        t.markAsDone();
-        printBox("Nice! I've marked this task as done:\n" + t.toString());
-    }
-    // Unmark task as not done
-    public static void markUndone(int number) {
-        Task t = list.get(number);
-        t.markUndone();
-        printBox("OK, I've marked this task as not done yet:\n" + t.toString());
-    }
-    // String for add task
-    public static void addTask(Task task, File TaskFile) {
-        long taskNumber = 0;
-        try {
-            FileWriter fw = new FileWriter(TaskFile.getPath(), true);
-            fw.write(task.toString() + "\n");
-            fw.close();
-            taskNumber = Files.lines(Path.of(TaskFile.getPath())).count();
-        } catch (IOException e) {
+            // Loads storage data file to taskList
+            this.taskList = new TaskList(storage.load());
+        } catch (Exception e) {
             System.out.println("Error occurred: " + e.getMessage());
+            this.taskList = new TaskList();
         }
-        
-        printBox("Got it. I've added this task: \n" +
-                "  " + task.toString() +
-                "\nNow you have " + taskNumber + " tasks in the list.");
     }
-    // Add task todo with exception
-    public static void addTodo(String args, File TaskFile) throws NoDescriptionException {
-        if (args.isEmpty()) {
-            throw new NoDescriptionException("todo");
-        }
-        addTask(new Todo(args), TaskFile);
-    }
-    // Add deadline
-    public static void addDeadline(String args, File TaskFile) throws NoDescriptionException, InvalidFormatException {
-        if (args.isEmpty()) {
-            throw new NoDescriptionException("deadline");
-        }
-        if (!args.contains("/by ")) {
-            throw new InvalidFormatException("deadline must have a /by <time>");
-        }
-        String[] arguments = args.split("/by ", 2);
-        addTask(new Deadline(arguments[0], arguments[1]), TaskFile);
-    }
-    // Add event
-    public static void addEvent(String args, File TaskFile) throws NoDescriptionException, InvalidFormatException {
-        if (args.isEmpty()) {
-            throw new NoDescriptionException("event");
-        }
-        if (!args.contains("/from ")) {
-            throw new InvalidFormatException("event must have a /from <time>");
-        }
-        if (!args.contains("/to ")) {
-            throw new InvalidFormatException(("event must have a /to <time>"));
-        }
-        String[] arguments = args.split("/from ", 2);
-        String description = arguments[0];
-        String[] time = arguments[1].split(" /to ", 2);
-        String from = time[0];
-        String to = time[1];
-        addTask(new Event(description, from, to), TaskFile);
-    }
-    // Delete task
-    public static void deleteTask(int number) {
-        Task task = list.get(number);
-        list.remove(number);
-        StringBuilder message = new StringBuilder();
-        message.append("Noted, I've removed this task:\n")
-                .append("  " + task.toString())
-                .append("\nNow you have " + list.size() + " tasks in the list.");
-        printBox(String.valueOf(message));
-    }
-    // Get file from hard disk
-    public static File getFile(String path) {
-        File myFile = new File(path);
-        try {
-            // Create directories if not present
-            File parent = myFile.getParentFile();
-            if (parent != null && !parent.exists()) {
-                parent.mkdirs();
-            }
-            // If file does not exist, create a new file
-            if (!myFile.exists()) {
-                myFile.createNewFile();
-            }
-        } catch (IOException e) {
-            System.out.println("Error occurred: " + e.getMessage());
-        }
-        return myFile;
-    }
-
-    public static void main(String[] args) throws InvalidFormatException {
+    // Run the Betty bot object
+    public void run() {
         // Greeting by chatbot
-        greeting();
-        // Create/Access file that stored Tasks
-        File TaskFile = getFile("./data/Betty.txt");
+        ui.greeting();
         // Create scanner to take input by user
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -151,38 +40,50 @@ public class Betty {
             try {
                 switch (command) {
                     case BYE:
-                        printBox("Bye. Hope to see you again soon!");
+                        // store TaskList into storage
+                        storage.store(this.taskList);
+                        ui.goodbye();
                         // stops program from running instead of repeating loop
                         return;
                     case LIST:
-                        displayList(TaskFile);
+                        ui.displayList(this.taskList);
                         break;
                     case MARK:
-                        markDone(Integer.parseInt(second) - 1);
+                        int number = Integer.parseInt(second) - 1;
+                        this.taskList.markDone(number);
+                        ui.markDone(taskList, number);
                         break;
                     case UNMARK:
-                        markUndone(Integer.parseInt(second) - 1);
+                        this.taskList.markUndone(Integer.parseInt(second) - 1);
                         break;
                     case TODO:
-                        addTodo(second, TaskFile);
+                        this.taskList.addTodo(second);
+                        ui.addTask(taskList);
                         break;
                     case DEADLINE:
-                        addDeadline(second, TaskFile);
+                        this.taskList.addDeadline(second);
+                        ui.addTask(taskList);
                         break;
                     case EVENT:
-                        addEvent(second, TaskFile);
+                        this.taskList.addEvent(second);
+                        ui.addTask(taskList);
                         break;
                     case DELETE:
-                        deleteTask(Integer.parseInt(second) - 1);
+                        taskList.deleteTask(Integer.parseInt(second) - 1);
                         break;
                     default:
                         throw new UnknownCommandException();
                 }
             } catch (UnknownCommandException | NoDescriptionException | InvalidFormatException e) {
-                printBox(e.getMessage());
+                ui.printBox(e.getMessage());
             } catch (IndexOutOfBoundsException e) {
-                printBox("Task number does not exist");
+                ui.printBox("Task number does not exist");
             }
+            storage.store(this.taskList);
         }
+    }
+
+    public static void main(String[] args) {
+        new Betty("./data/Betty.txt").run();
     }
 }

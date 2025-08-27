@@ -10,7 +10,7 @@ public class TodoTest {
     public void todo_toString_correctFormat() {
         Task task = new Todo("read book", false);
 
-        assertEquals("T |   | read book", task.toString());
+        assertEquals("[T][ ] read book", task.toString());
     }
 
     @Test
@@ -18,7 +18,7 @@ public class TodoTest {
         Task todo = new Todo("read book", false);
         todo.markAsDone();
 
-        assertEquals("T | X | read book", todo.toString());
+        assertEquals("[T][X] read book", todo.toString());
     }
 
 }

@@ -101,6 +101,9 @@ public class Parser {
                 }
                 info = commandArgs.split("/by ", 2);
                 description = info[0];
+                if (description.isEmpty()) {
+                    throw new BettyException("Please include description for deadline task");
+                }
                 String by = info[1];
                 Deadline deadlineTask = new Deadline(description, by);
                 return new AddDeadlineCommand(deadlineTask);
@@ -116,6 +119,9 @@ public class Parser {
                 }
                 info = commandArgs.split("/from ", 2);
                 description = arguments[0];
+                if (description.isEmpty()) {
+                    throw new BettyException("Please include description for event task");
+                }
                 String[] time = arguments[1].split(" /to ", 2);
                 String from = time[0];
                 String to = time[1];

@@ -28,67 +28,20 @@ public class Betty {
     }
     // Run the Betty bot object
     public void run() {
+        // track when to exit
+        boolean isExit = false;
         // Greeting by chatbot
-        ui.greeting();
-        // Create scanner to take input by user
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            // Listen for input by user
-            String input = scanner.nextLine();
-            // Listen for 2 argument
-            String[] arguments = input.split(" ", 2);
-            // First string is the type of command
-            String first = arguments[0];
-            // Second string, if present, is the number in list
-            String second = arguments.length > 1 ? arguments[1] : "";
+        this.ui.greeting();
 
-            // Convert to command in enum class Command
-            Command command = Command.fromString(first);
-
-            // Switch case using enums
+        while (!isExit) {
             try {
-                switch (command) {
-                    case BYE:
-                        // store TaskList into storage
-                        storage.store(this.taskList);
-                        ui.goodbye();
-                        // stops program from running instead of repeating loop
-                        return;
-                    case LIST:
-                        ui.displayList(this.taskList);
-                        break;
-                    case MARK:
-                        int number = Integer.parseInt(second) - 1;
-                        this.taskList.markDone(number);
-                        ui.markDone(taskList, number);
-                        break;
-                    case UNMARK:
-                        this.taskList.markUndone(Integer.parseInt(second) - 1);
-                        break;
-                    case TODO:
-                        this.taskList.addTodo(second);
-                        ui.addTask(taskList);
-                        break;
-                    case DEADLINE:
-                        this.taskList.addDeadline(second);
-                        ui.addTask(taskList);
-                        break;
-                    case EVENT:
-                        this.taskList.addEvent(second);
-                        ui.addTask(taskList);
-                        break;
-                    case DELETE:
-                        taskList.deleteTask(Integer.parseInt(second) - 1);
-                        break;
-                    default:
-                        throw new BettyException("Unknown Command");
-                }
+                String fullCommand = this.ui.readCommand();
+                Command c = Parser.parseCommand(fullCommand);
+                c.execute(this.taskList, this.ui, this.storage);
+                isExit = c.isExit();
             } catch (BettyException e) {
-                ui.printBox(e.getMessage());
-            } catch (IndexOutOfBoundsException e) {
-                ui.printBox("Task number does not exist");
+                ui.printError(e.getMessage());
             }
-            storage.store(this.taskList);
         }
     }
 

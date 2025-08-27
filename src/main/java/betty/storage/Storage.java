@@ -60,7 +60,7 @@ public class Storage {
     public void store(TaskList taskList) {
         try {
             FileWriter fw = new FileWriter(taskFile);
-            fw.write(taskList.toString());
+            fw.write(taskList.toSaveString());
             fw.close();
         } catch (IOException e) {
             System.out.println("Error occurred: " + e.getMessage());

@@ -8,35 +8,45 @@ import betty.task.Task;
 import betty.task.Todo;
 import betty.ui.Ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class Parser {
 
-    public static Task parseTask(String taskString) {
+    public static Task parseTask(String taskString) throws BettyException {
         // Create parsing for different cases of task
         String[] arguments = taskString.split(" \\| ", 5);
         String type = arguments[0];
         String completed = "0";
+        boolean isDone = false;
         String description = "";
-        String deadline;
-        String to;
-        String from;
+        LocalDate deadline;
+        LocalDate to;
+        LocalDate from;
 
         switch (type) {
             case "T":
                 completed = arguments[1];
+                isDone = completed.equals("1");
                 description = arguments[2];
-                return new Todo(description);
+                return new Todo(description, isDone);
             case "D":
                 completed = arguments[1];
+                isDone = completed.equals("1");
                 description = arguments[2];
-                deadline = arguments[3];
-                return new Deadline(description, deadline);
+                deadline = parseDate(arguments[3]);
+                return new Deadline(description, deadline, isDone);
             case "E":
                 completed = arguments[1];
+                isDone = completed.equals("1");
                 description = arguments[2];
-                from = arguments[3];
-                to = arguments[4];
-                return new Event(description, from, to);
+                from = parseDate(arguments[3]);
+                to = parseDate(arguments[4]);
+                return new Event(description, from, to, isDone);
             default:
                // TODO: THROW ERROR
                 throw new IllegalArgumentException("Unknown task type spotted in file: " + type);
@@ -85,7 +95,7 @@ public class Parser {
                 if (commandArgs.isEmpty()) {
                     throw new BettyException("Description missing");
                 }
-                return new AddTodoCommand(new Todo(commandArgs));
+                return new AddTodoCommand(new Todo(commandArgs, false));
             case DEADLINE:
                 if (commandArgs.isEmpty()) {
                     throw new BettyException("Please include description and deadline for deadline task");
@@ -95,8 +105,11 @@ public class Parser {
                 }
                 info = commandArgs.split("/by ", 2);
                 description = info[0];
-                String by = info[1];
-                Deadline deadlineTask = new Deadline(description, by);
+                if (description.isEmpty()) {
+                    throw new BettyException("Please include description for deadline task");
+                }
+                LocalDate by = Parser.parseDate(info[1]);
+                Deadline deadlineTask = new Deadline(description, by, false);
                 return new AddDeadlineCommand(deadlineTask);
             case EVENT:
                 if (commandArgs.isEmpty()) {
@@ -109,11 +122,14 @@ public class Parser {
                     throw new BettyException(("event must have a /to <time>"));
                 }
                 info = commandArgs.split("/from ", 2);
-                description = arguments[0];
-                String[] time = arguments[1].split(" /to ", 2);
-                String from = time[0];
-                String to = time[1];
-                Event eventTask = new Event(description, from, to);
+                description = info[0];
+                if (description.isEmpty()) {
+                    throw new BettyException("Please include description for event task");
+                }
+                String[] time = info[1].split(" /to ", 2);
+                LocalDate from = parseDate(time[0]);
+                LocalDate to = parseDate(time[1]);
+                Event eventTask = new Event(description, from, to, false);
                 return new AddEventCommand(eventTask);
             case DELETE:
                 try {
@@ -125,5 +141,24 @@ public class Parser {
             default:
                 throw new BettyException("Unknown Command");
         }
+    }
+    // Create a list to store multiple formats of date
+    private static final List<DateTimeFormatter> FORMATTERS = Arrays.asList(
+            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+            DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+            DateTimeFormatter.ofPattern("MM-dd-yyyy"),
+            DateTimeFormatter.ofPattern("MMM dd yyyy")
+    );
+
+    public static LocalDate parseDate(String date) {
+        for (DateTimeFormatter formatter : FORMATTERS) {
+            try {
+                return LocalDate.parse(date, formatter);
+            } catch (DateTimeParseException e) {
+                // Try the next formatter
+            }
+        }
+        // if no format matches, invalid date format;
+        throw new DateTimeParseException("Please input a valid date format", date, 0);
     }
 }

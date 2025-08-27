@@ -67,8 +67,20 @@ public class TaskList {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        int counter = 1;
         for (Task t : this.taskList) {
+            sb.append(String.valueOf(counter)).append(". ");
             sb.append(t.toString()).append("\n");
+            counter++;
+        }
+        return String.valueOf(sb);
+    }
+
+    // return string representation to save into file
+    public String toSaveString() {
+        StringBuilder sb = new StringBuilder();
+        for (Task t : this.taskList) {
+            sb.append(t.toSaveString()).append("\n");
         }
         return String.valueOf(sb);
     }

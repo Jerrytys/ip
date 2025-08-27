@@ -3,8 +3,16 @@ package betty.ui;
 import betty.task.Task;
 import betty.task.TaskList;
 
+import java.util.Scanner;
+
 public class Ui {
 
+    // Scanner to track input by user
+    private final Scanner input;
+
+    public Ui() {
+        this.input = new Scanner(System.in);
+    }
     // Helper function to print the chat messages
     public void printBox(String message) {
         System.out.println("-----------------------------------");
@@ -25,9 +33,9 @@ public class Ui {
         printBox(taskList.toString());
     }
     // Add task
-    public void addTask(TaskList taskList) {
+    public void addTask(Task task, TaskList taskList) {
         printBox("Got it. I've added this task: \n" +
-                "  " + taskList.get(taskList.size() - 1 ).toString() +
+                "  " + task.toString() +
                 "\nNow you have " + taskList.size() + " tasks in the list.");
     }
     public void deleteTask(Task task, TaskList taskList) {
@@ -44,5 +52,13 @@ public class Ui {
     }
     public void markUndone(TaskList taskList, int number) {
         printBox("OK, I've marked this task as not done yet:\n" + taskList.get(number).toString());
+    }
+    // Read command from scanner
+    public String readCommand() {
+        return this.input.nextLine();
+    }
+    // Print error message
+    public void printError(String message) {
+        printBox(message);
     }
 }

@@ -1,7 +1,6 @@
 package betty.task;
 
-import betty.InvalidFormatException;
-import betty.NoDescriptionException;
+import betty.exception.BettyException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,46 +46,21 @@ public class TaskList {
     }
 
     // Add task todo with exception
-    public void addTodo(String args) throws NoDescriptionException {
-        if (args.isEmpty()) {
-            throw new NoDescriptionException("todo");
-        }
-        addTask(new Todo(args));
+    public void addTodo(Todo todo) throws BettyException {
+        addTask(todo);
     }
     // Add deadline
-    public void addDeadline(String args) throws NoDescriptionException, InvalidFormatException {
-        if (args.isEmpty()) {
-            throw new NoDescriptionException("deadline");
-        }
-        if (!args.contains("/by ")) {
-            throw new InvalidFormatException("deadline must have a /by <time>");
-        }
-        String[] arguments = args.split("/by ", 2);
-        addTask(new Deadline(arguments[0], arguments[1]));
+    public void addDeadline(Deadline deadline) throws BettyException {
+        addTask(deadline);
     }
     // Add event
-    public void addEvent(String args) throws NoDescriptionException, InvalidFormatException {
-        if (args.isEmpty()) {
-            throw new NoDescriptionException("event");
-        }
-        if (!args.contains("/from ")) {
-            throw new InvalidFormatException("event must have a /from <time>");
-        }
-        if (!args.contains("/to ")) {
-            throw new InvalidFormatException(("event must have a /to <time>"));
-        }
-        String[] arguments = args.split("/from ", 2);
-        String description = arguments[0];
-        String[] time = arguments[1].split(" /to ", 2);
-        String from = time[0];
-        String to = time[1];
-        addTask(new Event(description, from, to));
+    public void addEvent(Event eventTask) throws BettyException {
+        addTask(eventTask);
     }
     // Delete task
     public void deleteTask(int number) {
         Task task = this.taskList.get(number);
         this.taskList.remove(number);
-
     }
 
     // return string representation of list

@@ -1,15 +1,24 @@
 package betty.task;
 
+import betty.exception.BettyException;
+import betty.parser.Parser;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 public class Deadline extends Task {
 
     protected LocalDate by;
 
-    public Deadline(String description, String by) {
+    public Deadline(String description, String by) throws BettyException {
         super(description);
-        this.by = LocalDate.parse(by);
+        try {
+            this.by = Parser.parseDate(by);
+        } catch (DateTimeParseException e){
+            throw new BettyException("Please input a valid date format");
+        }
     }
 
     @Override

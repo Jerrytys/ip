@@ -8,8 +8,6 @@ import betty.task.Task;
 import betty.task.Todo;
 import betty.ui.Ui;
 
-import static betty.Command.BYE;
-import static betty.Command.LIST;
 
 public class Parser {
 

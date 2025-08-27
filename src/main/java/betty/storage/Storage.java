@@ -13,8 +13,8 @@ import java.util.Scanner;
 
 public class Storage {
 
-    private String filePath;
-    private File taskFile;
+    private final String filePath;
+    private final File taskFile;
 
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -59,7 +59,7 @@ public class Storage {
     // Function to store a taskList into your data list
     public void store(TaskList taskList) {
         try {
-            FileWriter fw = new FileWriter(filePath);
+            FileWriter fw = new FileWriter(taskFile);
             fw.write(taskList.toString());
             fw.close();
         } catch (IOException e) {

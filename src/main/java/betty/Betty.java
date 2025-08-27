@@ -1,6 +1,8 @@
 package betty;
 
 import betty.exception.BettyException;
+import betty.command.Command;
+import betty.parser.Parser;
 import betty.storage.Storage;
 import betty.task.TaskList;
 import betty.ui.Ui;
@@ -9,9 +11,9 @@ import java.util.Scanner;
 
 public class Betty {
 
-    private Ui ui;
+    private final Ui ui;
     private TaskList taskList;
-    private Storage storage;
+    private final Storage storage;
 
     public Betty(String filePath) {
         this.ui = new Ui();

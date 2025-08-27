@@ -8,10 +8,16 @@ import betty.task.Task;
 import betty.task.Todo;
 import betty.ui.Ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class Parser {
 
-    public static Task parseTask(String taskString) {
+    public static Task parseTask(String taskString) throws BettyException {
         // Create parsing for different cases of task
         String[] arguments = taskString.split(" \\| ", 5);
         String type = arguments[0];
@@ -125,5 +131,23 @@ public class Parser {
             default:
                 throw new BettyException("Unknown Command");
         }
+    }
+    // Create a list to store multiple formats of date
+    private static final List<DateTimeFormatter> FORMATTERS = Arrays.asList(
+            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+            DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+            DateTimeFormatter.ofPattern("MM-dd-yyyy")
+    );
+
+    public static LocalDate parseDate(String date) {
+        for (DateTimeFormatter formatter : FORMATTERS) {
+            try {
+                return LocalDate.parse(date, formatter);
+            } catch (DateTimeParseException e) {
+                // Try the next formatter
+            }
+        }
+        // if no format matches, invalid date format;
+        throw new DateTimeParseException("Please input a valid date format", date, 0);
     }
 }

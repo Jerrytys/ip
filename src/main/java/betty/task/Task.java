@@ -5,8 +5,8 @@ public class Task {
     protected boolean isDone;
     protected String description;
 
-    public Task(String description) {
-        this.isDone = false;
+    public Task(String description, boolean isDone) {
+        this.isDone = isDone;
         this.description = description;
     }
 
@@ -14,7 +14,10 @@ public class Task {
     public String getStatusIcon() {
         return this.isDone ? "X" : " ";
     }
-
+    // method to get isDone
+    public boolean isDone() {
+        return this.isDone;
+    }
     // Mark task as done
     public void markAsDone() {
         this.isDone = true;
@@ -30,6 +33,11 @@ public class Task {
     // return string of status and description as toString()
     @Override
     public String toString() {
-        return this.getStatusIcon() + " | " + this.getDescription();
+        return this.getStatusIcon() + " " + this.getDescription();
+    }
+
+    public String toSaveString() {
+        String completed = this.isDone ? "1" : "0";
+        return completed + " | " + this.getDescription();
     }
 }

@@ -1,7 +1,6 @@
 package betty.task;
 
-import betty.InvalidFormatException;
-import betty.NoDescriptionException;
+import betty.exception.BettyException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,33 +46,33 @@ public class TaskList {
     }
 
     // Add task todo with exception
-    public void addTodo(String args) throws NoDescriptionException {
+    public void addTodo(String args) throws BettyException {
         if (args.isEmpty()) {
-            throw new NoDescriptionException("todo");
+            throw new BettyException("todo");
         }
         addTask(new Todo(args));
     }
     // Add deadline
-    public void addDeadline(String args) throws NoDescriptionException, InvalidFormatException {
+    public void addDeadline(String args) throws BettyException {
         if (args.isEmpty()) {
-            throw new NoDescriptionException("deadline");
+            throw new BettyException("deadline");
         }
         if (!args.contains("/by ")) {
-            throw new InvalidFormatException("deadline must have a /by <time>");
+            throw new BettyException("deadline must have a /by <time>");
         }
         String[] arguments = args.split("/by ", 2);
         addTask(new Deadline(arguments[0], arguments[1]));
     }
     // Add event
-    public void addEvent(String args) throws NoDescriptionException, InvalidFormatException {
+    public void addEvent(String args) throws BettyException {
         if (args.isEmpty()) {
-            throw new NoDescriptionException("event");
+            throw new BettyException("event");
         }
         if (!args.contains("/from ")) {
-            throw new InvalidFormatException("event must have a /from <time>");
+            throw new BettyException("event must have a /from <time>");
         }
         if (!args.contains("/to ")) {
-            throw new InvalidFormatException(("event must have a /to <time>"));
+            throw new BettyException(("event must have a /to <time>"));
         }
         String[] arguments = args.split("/from ", 2);
         String description = arguments[0];

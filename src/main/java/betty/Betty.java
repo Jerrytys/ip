@@ -1,5 +1,6 @@
 package betty;
 
+import betty.exception.BettyException;
 import betty.storage.Storage;
 import betty.task.TaskList;
 import betty.ui.Ui;
@@ -78,9 +79,9 @@ public class Betty {
                         taskList.deleteTask(Integer.parseInt(second) - 1);
                         break;
                     default:
-                        throw new UnknownCommandException();
+                        throw new BettyException("Unknown Command");
                 }
-            } catch (UnknownCommandException | NoDescriptionException | InvalidFormatException e) {
+            } catch (BettyException e) {
                 ui.printBox(e.getMessage());
             } catch (IndexOutOfBoundsException e) {
                 ui.printBox("Task number does not exist");

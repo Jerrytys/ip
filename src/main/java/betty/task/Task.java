@@ -33,7 +33,7 @@ public class Task {
     // return string of status and description as toString()
     @Override
     public String toString() {
-        return this.getStatusIcon() + " " + this.getDescription();
+        return "[" + this.getStatusIcon() + "] " + this.getDescription();
     }
 
     public String toSaveString() {

@@ -20,8 +20,7 @@ public class Deadline extends Task {
     public String toString() {
         // Format time to pattern MMM dd yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
-        return "[D]" + "[" + super.getStatusIcon() + "]"
-                + super.toString() + " (by: " + this.by.format(dateFormat) + ")";
+        return "[D]" + super.toString() + " (by: " + this.by.format(dateFormat) + ")";
     }
 
     @Override
@@ -29,6 +28,6 @@ public class Deadline extends Task {
         // Format time to pattern MMM dd yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
         String doneValue = super.isDone() ? "1" : "0";
-        return "D | " + super.toSaveString() + "| " + this.by.format(dateFormat);
+        return "D | " + super.toSaveString() + " | " + this.by.format(dateFormat);
     }
 }

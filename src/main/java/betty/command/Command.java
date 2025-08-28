@@ -15,6 +15,7 @@ public abstract class Command {
         DEADLINE,
         EVENT,
         DELETE,
+        FIND,
         UNKNOWN;
 
         // Create a method that converts input string to commandType
@@ -28,6 +29,7 @@ public abstract class Command {
                 case "deadline" -> DEADLINE;
                 case "event" -> EVENT;
                 case "delete" -> DELETE;
+                case "find" -> FIND;
                 default -> UNKNOWN;
             };
         }

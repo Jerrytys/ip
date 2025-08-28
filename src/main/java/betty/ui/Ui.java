@@ -62,6 +62,10 @@ public class Ui {
         printBox(message);
     }
 
+    /**
+     * Display the filtered list given a filtered task list
+     * @param filtered filtered task list to be displayed
+     */
     public void displayFilteredList(TaskList filtered) {
         String message = "Here are the matching tasks in your list :\n";
         printBox(message + filtered.toString());

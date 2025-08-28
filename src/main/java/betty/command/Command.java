@@ -18,6 +18,7 @@ public abstract class Command {
         DEADLINE,
         EVENT,
         DELETE,
+        FIND,
         UNKNOWN;
 
         /**
@@ -36,6 +37,7 @@ public abstract class Command {
                 case "deadline" -> DEADLINE;
                 case "event" -> EVENT;
                 case "delete" -> DELETE;
+                case "find" -> FIND;
                 default -> UNKNOWN;
             };
         }

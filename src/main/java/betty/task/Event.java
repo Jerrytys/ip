@@ -39,7 +39,7 @@ public class Event extends Task {
         // Format time to pattern MMM dd yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
         return "[E]" + super.toString()
-                + " (from: " + this.from.format(dateFormat)
+                + "(from: " + this.from.format(dateFormat)
                 + " to: " + this.to.format(dateFormat) + ")";
     }
     /**
@@ -51,6 +51,6 @@ public class Event extends Task {
         // Format time to pattern MMM dd yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
         return "E | " + super.toSaveString() + " | " + this.from.format(dateFormat) +
-                " | to: " + this.to.format(dateFormat);
+                " | " + this.to.format(dateFormat);
     }
 }

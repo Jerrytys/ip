@@ -133,4 +133,14 @@ public class TaskList {
         }
         return String.valueOf(sb);
     }
+
+    public TaskList find(String filter) {
+        List<Task> filtered = new ArrayList<>();
+        for (Task t : this.taskList) {
+            if (t.getDescription().contains(filter)) {
+                filtered.add(t);
+            }
+        }
+        return new TaskList(filtered);
+    }
 }

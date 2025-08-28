@@ -11,17 +11,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Represents a storage object that stores the list of task in a local file
+ * Provides operations to create, store and load file
+ */
 public class Storage {
 
     private final String filePath;
     private final File taskFile;
 
+    /**
+     * Construct a storage with the given file path for storage of task list
+     * @param filePath path given to store file
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
         this.taskFile = this.getFile();
     }
 
-    // Method to get/create file to store task
+    /**
+     * Returns a file if path matches filePath provided, else create a new file in given path
+     * @return file for storage of task list
+     */
     public File getFile() {
         File myFile = new File(this.filePath);
         try {
@@ -40,6 +51,10 @@ public class Storage {
         return myFile;
     }
 
+    /**
+     * Loads the given file into a task list
+     * @return a list of task parsed and loaded from file
+     */
     public List<Task> load() {
         List<Task> taskList = new ArrayList<>();
         // Use scanner to read file and parse each line to become a task object
@@ -56,7 +71,11 @@ public class Storage {
 
         return taskList;
     }
-    // Function to store a taskList into your data list
+
+    /**
+     * Stores the given task list into the storage file
+     * @param taskList taskList to be stored into file
+     */
     public void store(TaskList taskList) {
         try {
             FileWriter fw = new FileWriter(taskFile);

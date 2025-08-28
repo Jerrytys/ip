@@ -5,6 +5,9 @@ import betty.storage.Storage;
 import betty.task.TaskList;
 import betty.ui.Ui;
 
+/**
+ * Represents the command object that can be read and executed by the task manager
+ */
 public abstract class Command {
     public enum CommandName {
         BYE,
@@ -17,7 +20,12 @@ public abstract class Command {
         DELETE,
         UNKNOWN;
 
-        // Create a method that converts input string to commandType
+        /**
+         * Converts the user input command into a command name
+         * If command does not match any known command, return UNKNOWN
+         * @param command String representation of user command
+         * @return corresponding command name of command
+         */
         public static CommandName fromString(String command) {
             return switch (command.toLowerCase()) {
                 case "bye" -> BYE;
@@ -32,8 +40,19 @@ public abstract class Command {
             };
         }
     }
-
+    /**
+     * Executes the command using the given task list, UI, and storage.
+     *
+     * @param taskList the list of tasks to operate on
+     * @param ui the user interface to display messages
+     * @param storage the storage manager to save changes
+     * @throws BettyException if execution fails
+     */
     public abstract void execute(TaskList taskList, Ui ui, Storage storage) throws BettyException;
-
+    /**
+     * Returns whether this command should terminate the program.
+     *
+     * @return true if this command signals an exit, false otherwise
+     */
     public abstract boolean isExit();
 }

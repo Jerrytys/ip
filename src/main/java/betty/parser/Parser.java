@@ -14,9 +14,17 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Represents a parser class that can parse strings into other useful objects
+ * Supports operation such as parseCommand, parseDate, parseTask
+ */
 public class Parser {
-
+    /**
+     * Parses a task from a string representation in storage into a task that can be added into task list
+     * @param taskString String representation of task from storage file
+     * @return task that has been parsed
+     * @throws BettyException BettyException if error in parsing task
+     */
     public static Task parseTask(String taskString) throws BettyException {
         // Create parsing for different cases of task
         String[] arguments = taskString.split(" \\| ", 5);
@@ -53,6 +61,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Parse commands given by users into useful commands to be interpreted by the task manager object
+     * @param command String representation of command inputted by user
+     * @return a command to be executed by the task manager
+     * @throws BettyException BettyException if there is error in parsing command
+     */
     public static Command parseCommand(String command) throws BettyException {
         // Create a ui class
         Ui ui = new Ui();
@@ -150,6 +164,11 @@ public class Parser {
             DateTimeFormatter.ofPattern("MMM dd yyyy")
     );
 
+    /**
+     * Parses date string representation into a LocalDate object
+     * @param date String representation of date provided by user
+     * @return LocalDate object after string representation of date has been parsed
+     */
     public static LocalDate parseDate(String date) {
         for (DateTimeFormatter formatter : FORMATTERS) {
             try {

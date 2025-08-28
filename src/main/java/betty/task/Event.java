@@ -1,11 +1,9 @@
 package betty.task;
 
 import betty.exception.BettyException;
-import betty.parser.Parser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class Event extends Task {
 

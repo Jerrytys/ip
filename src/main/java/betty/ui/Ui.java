@@ -61,4 +61,9 @@ public class Ui {
     public void printError(String message) {
         printBox(message);
     }
+
+    public void displayFilteredList(TaskList filtered) {
+        String message = "Here are the matching tasks in your list :\n";
+        printBox(message + filtered.toString());
+    }
 }

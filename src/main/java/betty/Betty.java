@@ -9,12 +9,21 @@ import betty.ui.Ui;
 
 import java.util.Scanner;
 
+/**
+ * Represents the Betty object which is the task manager bot application
+ * Betty manages the task list by parsing user commands, executing commands, and
+ * saving updates to persistent storage
+ */
 public class Betty {
 
     private final Ui ui;
     private TaskList taskList;
     private final Storage storage;
 
+    /**
+     * Constructs a new Betty chatbot
+     * @param filePath filePath for persistent storage of tasks using for storing/loading of task list
+     */
     public Betty(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
@@ -26,7 +35,10 @@ public class Betty {
             this.taskList = new TaskList();
         }
     }
-    // Run the Betty bot object
+
+    /**
+     * Runs the chatbot. Handles main loop of reading user command, parsing and executing commands
+     */
     public void run() {
         // track when to exit
         boolean isExit = false;
@@ -44,7 +56,11 @@ public class Betty {
             }
         }
     }
-
+    /**
+     * The main entry point of the application.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         new Betty("./data/Betty.txt").run();
     }

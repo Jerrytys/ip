@@ -85,75 +85,75 @@ public class Parser {
         // Convert argument to command name
         Command.CommandName cm = Command.CommandName.fromString(commandName);
         switch (cm) {
-            case BYE:
-                // store TaskList into storage
-                // stops program from running instead of repeating loop
-                return new ByeCommand();
-            case LIST:
-                return new ListCommand();
-            case MARK:
-                try {
-                    taskNum = Integer.parseInt(commandArgs);
-                } catch (NumberFormatException e) {
-                    throw new BettyException("Please provide a number to mark");
-                }
-                return new MarkTaskCommand(taskNum);
-            case UNMARK:
-                try {
-                    taskNum = Integer.parseInt(commandArgs);
-                } catch (NumberFormatException e) {
-                    throw new BettyException("Please provide a number to unmark");
-                }
-                return new UnmarkTaskCommand(taskNum);
-            case TODO:
-                if (commandArgs.isEmpty()) {
-                    throw new BettyException("Description missing");
-                }
-                return new AddTodoCommand(new Todo(commandArgs, false));
-            case DEADLINE:
-                if (commandArgs.isEmpty()) {
-                    throw new BettyException("Please include description and deadline for deadline task");
-                }
-                if (!commandArgs.contains("/by ")) {
-                    throw new BettyException("deadline must have a /by <time>");
-                }
-                info = commandArgs.split("/by ", 2);
-                description = info[0];
-                if (description.isEmpty()) {
-                    throw new BettyException("Please include description for deadline task");
-                }
-                LocalDate by = Parser.parseDate(info[1]);
-                Deadline deadlineTask = new Deadline(description, by, false);
-                return new AddDeadlineCommand(deadlineTask);
-            case EVENT:
-                if (commandArgs.isEmpty()) {
-                    throw new BettyException("Please include description and duration for event task");
-                }
-                if (!commandArgs.contains("/from ")) {
-                    throw new BettyException("event must have a /from <time>");
-                }
-                if (!commandArgs.contains("/to ")) {
-                    throw new BettyException(("event must have a /to <time>"));
-                }
-                info = commandArgs.split("/from ", 2);
-                description = info[0];
-                if (description.isEmpty()) {
-                    throw new BettyException("Please include description for event task");
-                }
-                String[] time = info[1].split(" /to ", 2);
-                LocalDate from = parseDate(time[0]);
-                LocalDate to = parseDate(time[1]);
-                Event eventTask = new Event(description, from, to, false);
-                return new AddEventCommand(eventTask);
-            case DELETE:
-                try {
-                    taskNum = Integer.parseInt(commandArgs);
-                } catch (NumberFormatException e) {
-                    throw new BettyException("Please provide a number to delete");
-                }
-                return new DeleteCommand(taskNum);
-            default:
-                throw new BettyException("Unknown Command");
+        case BYE:
+            // store TaskList into storage
+            // stops program from running instead of repeating loop
+            return new ByeCommand();
+        case LIST:
+            return new ListCommand();
+        case MARK:
+            try {
+                taskNum = Integer.parseInt(commandArgs);
+            } catch (NumberFormatException e) {
+                throw new BettyException("Please provide a number to mark");
+            }
+            return new MarkTaskCommand(taskNum);
+        case UNMARK:
+            try {
+                taskNum = Integer.parseInt(commandArgs);
+            } catch (NumberFormatException e) {
+                throw new BettyException("Please provide a number to unmark");
+            }
+            return new UnmarkTaskCommand(taskNum);
+        case TODO:
+            if (commandArgs.isEmpty()) {
+                throw new BettyException("Description missing");
+            }
+            return new AddTodoCommand(new Todo(commandArgs, false));
+        case DEADLINE:
+            if (commandArgs.isEmpty()) {
+                throw new BettyException("Please include description and deadline for deadline task");
+            }
+            if (!commandArgs.contains("/by ")) {
+                throw new BettyException("deadline must have a /by <time>");
+            }
+            info = commandArgs.split("/by ", 2);
+            description = info[0];
+            if (description.isEmpty()) {
+                throw new BettyException("Please include description for deadline task");
+            }
+            LocalDate by = Parser.parseDate(info[1]);
+            Deadline deadlineTask = new Deadline(description, by, false);
+            return new AddDeadlineCommand(deadlineTask);
+        case EVENT:
+            if (commandArgs.isEmpty()) {
+                throw new BettyException("Please include description and duration for event task");
+            }
+            if (!commandArgs.contains("/from ")) {
+                throw new BettyException("event must have a /from <time>");
+            }
+            if (!commandArgs.contains("/to ")) {
+                throw new BettyException(("event must have a /to <time>"));
+            }
+            info = commandArgs.split("/from ", 2);
+            description = info[0];
+            if (description.isEmpty()) {
+                throw new BettyException("Please include description for event task");
+            }
+            String[] time = info[1].split(" /to ", 2);
+            LocalDate from = parseDate(time[0]);
+            LocalDate to = parseDate(time[1]);
+            Event eventTask = new Event(description, from, to, false);
+            return new AddEventCommand(eventTask);
+        case DELETE:
+            try {
+                taskNum = Integer.parseInt(commandArgs);
+            } catch (NumberFormatException e) {
+                throw new BettyException("Please provide a number to delete");
+            }
+            return new DeleteCommand(taskNum);
+        default:
+            throw new BettyException("Unknown Command");
         }
     }
     // Create a list to store multiple formats of date

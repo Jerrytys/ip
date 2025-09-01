@@ -1,15 +1,15 @@
 package betty.storage;
 
-import betty.parser.Parser;
-import betty.task.Task;
-import betty.task.TaskList;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import betty.parser.Parser;
+import betty.task.Task;
+import betty.task.TaskList;
 
 /**
  * Represents a storage object that stores the list of task in a local file

@@ -1,10 +1,13 @@
 package betty.ui;
 
+import java.util.Scanner;
+
 import betty.task.Task;
 import betty.task.TaskList;
 
-import java.util.Scanner;
-
+/**
+ * Represents an Ui object that prints out messages by the chatbot
+ */
 public class Ui {
 
     // Scanner to track input by user
@@ -13,7 +16,11 @@ public class Ui {
     public Ui() {
         this.input = new Scanner(System.in);
     }
-    // Helper function to print the chat messages
+
+    /**
+     * Wraps a message between 2 lines, creating a box with message inside
+     * @param message the message to be wrapped
+     */
     public void printBox(String message) {
         System.out.println("-----------------------------------");
         System.out.println(message);
@@ -32,12 +39,22 @@ public class Ui {
     public void displayList(TaskList taskList) {
         printBox(taskList.toString());
     }
-    // Add task
+
+    /**
+     * Prints the message for adding a task to the task list
+     * @param task task to be added
+     * @param taskList task list where task is added
+     */
     public void addTask(Task task, TaskList taskList) {
-        printBox("Got it. I've added this task: \n" +
-                "  " + task.toString() +
-                "\nNow you have " + taskList.size() + " tasks in the list.");
+        printBox("Got it. I've added this task: \n"
+                + "  " + task.toString()
+                + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
+    /**
+     * Prints the message for deleting a task to the task list
+     * @param task task to be deleted
+     * @param taskList task list where task is deleted
+     */
     public void deleteTask(Task task, TaskList taskList) {
         StringBuilder deleteMessage = new StringBuilder();
         deleteMessage.append("Noted, I've removed this task:\n")

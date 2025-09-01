@@ -1,5 +1,11 @@
 package betty.parser;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
+
 import betty.command.*;
 import betty.exception.BettyException;
 import betty.task.Deadline;
@@ -8,17 +14,19 @@ import betty.task.Task;
 import betty.task.Todo;
 import betty.ui.Ui;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Represents a parser class that can parse strings into other useful objects
  * Supports operation such as parseCommand, parseDate, parseTask
  */
 public class Parser {
+    // Create a list to store multiple formats of date
+    private static final List<DateTimeFormatter> FORMATTERS = Arrays.asList(
+            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+            DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+            DateTimeFormatter.ofPattern("MM-dd-yyyy"),
+            DateTimeFormatter.ofPattern("MMM dd yyyy")
+    );
+
     /**
      * Parses a task from a string representation in storage into a task that can be added into task list
      * @param taskString String representation of task from storage file
@@ -37,27 +45,27 @@ public class Parser {
         LocalDate from;
 
         switch (type) {
-            case "T":
-                completed = arguments[1];
-                isDone = completed.equals("1");
-                description = arguments[2];
-                return new Todo(description, isDone);
-            case "D":
-                completed = arguments[1];
-                isDone = completed.equals("1");
-                description = arguments[2];
-                deadline = parseDate(arguments[3]);
-                return new Deadline(description, deadline, isDone);
-            case "E":
-                completed = arguments[1];
-                isDone = completed.equals("1");
-                description = arguments[2];
-                from = parseDate(arguments[3]);
-                to = parseDate(arguments[4]);
-                return new Event(description, from, to, isDone);
-            default:
-               // TODO: THROW ERROR
-                throw new IllegalArgumentException("Unknown task type spotted in file: " + type);
+        case "T":
+            completed = arguments[1];
+            isDone = completed.equals("1");
+            description = arguments[2];
+            return new Todo(description, isDone);
+        case "D":
+            completed = arguments[1];
+            isDone = completed.equals("1");
+            description = arguments[2];
+            deadline = parseDate(arguments[3]);
+            return new Deadline(description, deadline, isDone);
+        case "E":
+            completed = arguments[1];
+            isDone = completed.equals("1");
+            description = arguments[2];
+            from = parseDate(arguments[3]);
+            to = parseDate(arguments[4]);
+            return new Event(description, from, to, isDone);
+        default:
+            // TODO: THROW ERROR
+            throw new IllegalArgumentException("Unknown task type spotted in file: " + type);
         }
     }
 
@@ -161,13 +169,6 @@ public class Parser {
             throw new BettyException("Unknown Command");
         }
     }
-    // Create a list to store multiple formats of date
-    private static final List<DateTimeFormatter> FORMATTERS = Arrays.asList(
-            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
-            DateTimeFormatter.ofPattern("dd/MM/yyyy"),
-            DateTimeFormatter.ofPattern("MM-dd-yyyy"),
-            DateTimeFormatter.ofPattern("MMM dd yyyy")
-    );
 
     /**
      * Parses date string representation into a LocalDate object

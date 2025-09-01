@@ -1,9 +1,9 @@
 package betty.task;
 
-import betty.exception.BettyException;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import betty.exception.BettyException;
 
 /**
  * Represent a TaskList object that stores a list of task
@@ -134,6 +134,11 @@ public class TaskList {
         return String.valueOf(sb);
     }
 
+    /**
+     * Returns the filtered task list after filtering by filter string
+     * @param filter the filter string to filter the task list by
+     * @return a new task list containing the filtered tasks
+     */
     public TaskList find(String filter) {
         List<Task> filtered = new ArrayList<>();
         for (Task t : this.taskList) {

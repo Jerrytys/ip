@@ -50,7 +50,7 @@ public class Event extends Task {
     public String toSaveString() {
         // Format time to pattern MMM dd yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
-        return "E | " + super.toSaveString() + " | " + this.from.format(dateFormat) +
-                " | " + this.to.format(dateFormat);
+        return "E | " + super.toSaveString() + " | " + this.from.format(dateFormat)
+                + " | " + this.to.format(dateFormat);
     }
 }

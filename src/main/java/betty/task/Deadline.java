@@ -1,9 +1,9 @@
 package betty.task;
 
-import betty.exception.BettyException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import betty.exception.BettyException;
 
 /**
  * Represents a deadline task inherited from the task class

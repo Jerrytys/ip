@@ -9,6 +9,9 @@ import betty.ui.Ui;
  * Represents the command object that can be read and executed by the task manager
  */
 public abstract class Command {
+    /**
+     * An enumeration of all the different command names of the chatbot
+     */
     public enum CommandName {
         BYE,
         LIST,
@@ -29,16 +32,16 @@ public abstract class Command {
          */
         public static CommandName fromString(String command) {
             return switch (command.toLowerCase()) {
-                case "bye" -> BYE;
-                case "list" -> LIST;
-                case "mark" -> MARK;
-                case "unmark" -> UNMARK;
-                case "todo" -> TODO;
-                case "deadline" -> DEADLINE;
-                case "event" -> EVENT;
-                case "delete" -> DELETE;
-                case "find" -> FIND;
-                default -> UNKNOWN;
+            case "bye" -> BYE;
+            case "list" -> LIST;
+            case "mark" -> MARK;
+            case "unmark" -> UNMARK;
+            case "todo" -> TODO;
+            case "deadline" -> DEADLINE;
+            case "event" -> EVENT;
+            case "delete" -> DELETE;
+            case "find" -> FIND;
+            default -> UNKNOWN;
             };
         }
     }

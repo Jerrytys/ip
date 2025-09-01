@@ -10,7 +10,7 @@ import betty.ui.Ui;
  */
 public class FindCommand extends Command {
 
-    String filter;
+    private final String filter;
 
     /**
      * Constructor for command to filter list by given filter string

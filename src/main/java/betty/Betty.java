@@ -1,13 +1,11 @@
 package betty;
 
-import betty.exception.BettyException;
 import betty.command.Command;
+import betty.exception.BettyException;
 import betty.parser.Parser;
 import betty.storage.Storage;
 import betty.task.TaskList;
 import betty.ui.Ui;
-
-import java.util.Scanner;
 
 /**
  * Represents the Betty object which is the task manager bot application

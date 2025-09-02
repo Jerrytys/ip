@@ -24,16 +24,18 @@ public class AddDeadlineCommand extends Command {
 
     /**
      * Executes the command to add deadline task into task list, storage and shows message by ui
+     *
      * @param taskList the list of tasks to operate on
-     * @param ui the user interface to display messages
-     * @param storage the storage manager to save changes
+     * @param ui       the user interface to display messages
+     * @param storage  the storage manager to save changes
+     * @return
      * @throws BettyException if execution fails
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
         taskList.addDeadline(this.deadlineTask);
-        ui.addTask(this.deadlineTask, taskList);
         storage.store(taskList);
+        return ui.addTask(this.deadlineTask, taskList);
     }
 
     /**

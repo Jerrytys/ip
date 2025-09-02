@@ -22,16 +22,18 @@ public class AddEventCommand extends Command {
 
     /**
      * Executes the command to event task into task list and storage, and shows message by ui
+     *
      * @param taskList the list of tasks to operate on
-     * @param ui the user interface to display messages
-     * @param storage the storage manager to save changes
+     * @param ui       the user interface to display messages
+     * @param storage  the storage manager to save changes
+     * @return
      * @throws BettyException if execution fails
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
         taskList.addEvent(this.eventTask);
-        ui.addTask(this.eventTask, taskList);
         storage.store(taskList);
+        return ui.addTask(this.eventTask, taskList);
     }
 
     /**

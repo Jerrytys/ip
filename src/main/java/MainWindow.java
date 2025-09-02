@@ -32,6 +32,9 @@ public class MainWindow extends AnchorPane {
     /** Injects the Duke instance */
     public void setBetty(Betty b) {
         betty = b;
+        // Add initial greeting to chatbot
+        DialogBox bettyBox = DialogBox.getBettyDialog(betty.getGreeting(), userImage);
+        dialogContainer.getChildren().addAll(bettyBox);
     }
 
     /**

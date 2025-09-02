@@ -7,6 +7,8 @@ import betty.storage.Storage;
 import betty.task.TaskList;
 import betty.ui.Ui;
 
+import java.util.Scanner;
+
 /**
  * Represents the Betty object which is the task manager bot application
  * Betty manages the task list by parsing user commands, executing commands, and
@@ -72,7 +74,17 @@ public class Betty {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
-        return "Betty heard: " + input;
+        String response = "";
+        try {
+            Command c = Parser.parseCommand(input);
+            response = c.execute(this.taskList, this.ui, this.storage);
+            return response;
+        } catch (BettyException e) {
+            return "Error";
+        }
+    }
+    public String getGreeting() {
+        return this.ui.greeting();
     }
     /**
      * The main entry point of the application.

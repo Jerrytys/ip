@@ -24,17 +24,19 @@ public class DeleteCommand extends Command {
 
     /**
      * Executes the command to delete the task number from task list and storage, printing message from ui
+     *
      * @param taskList the list of tasks to operate on
-     * @param ui the user interface to display messages
-     * @param storage the storage manager to save changes
+     * @param ui       the user interface to display messages
+     * @param storage  the storage manager to save changes
+     * @return
      * @throws BettyException if execution fails
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
         Task task = taskList.get(taskNum);
         taskList.deleteTask(this.taskNum);
-        ui.deleteTask(task, taskList);
         storage.store(taskList);
+        return ui.deleteTask(task, taskList);
     }
     /**
      * Returns whether this command should terminate the program.

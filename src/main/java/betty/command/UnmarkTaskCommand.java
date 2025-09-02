@@ -24,16 +24,18 @@ public class UnmarkTaskCommand extends Command {
     /**
      * Executes the command to unmark a task at given taskNum index in task list and storage,
      * printing message from ui
+     *
      * @param taskList the list of tasks to operate on
-     * @param ui the user interface to display messages
-     * @param storage the storage manager to save changes
+     * @param ui       the user interface to display messages
+     * @param storage  the storage manager to save changes
+     * @return
      * @throws BettyException if execution fails
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
         taskList.markUndone(this.taskNum);
-        ui.markUndone(taskList, this.taskNum);
         storage.store(taskList);
+        return ui.markUndone(taskList, this.taskNum);
     }
     /**
      * Returns whether this command should terminate the program.

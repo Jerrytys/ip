@@ -24,15 +24,17 @@ public class AddTodoCommand extends Command {
 
     /**
      * Executes the command to add todo task into task list and storage, and shows message on the ui
+     *
      * @param taskList the list of tasks to operate on
-     * @param ui the user interface to display messages
-     * @param storage the storage manager to save changes
+     * @param ui       the user interface to display messages
+     * @param storage  the storage manager to save changes
+     * @return
      * @throws BettyException if execution fails
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
         taskList.addTodo(this.todo);
-        ui.addTask(this.todo, taskList);
+        return ui.addTask(this.todo, taskList);
     }
 
     /**

@@ -80,7 +80,7 @@ public class Betty {
             response = c.execute(this.taskList, this.ui, this.storage);
             return response;
         } catch (BettyException e) {
-            return "Error";
+            return this.ui.printError(e.getMessage());
         }
     }
     public String getGreeting() {

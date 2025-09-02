@@ -22,8 +22,8 @@ public class MainWindow extends AnchorPane {
 
     private Betty betty;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image bettyImage = new Image(this.getClass().getResourceAsStream("/images/Dauser.png"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.jpg"));
+    private Image bettyImage = new Image(this.getClass().getResourceAsStream("/images/ChatBot.jpg"));
 
     @FXML
     public void initialize() {
@@ -34,7 +34,7 @@ public class MainWindow extends AnchorPane {
     public void setBetty(Betty b) {
         betty = b;
         // Add initial greeting to chatbot
-        DialogBox bettyBox = DialogBox.getBettyDialog(betty.getGreeting(), userImage);
+        DialogBox bettyBox = DialogBox.getBettyDialog(betty.getGreeting(), bettyImage);
         dialogContainer.getChildren().addAll(bettyBox);
     }
 
@@ -47,7 +47,7 @@ public class MainWindow extends AnchorPane {
         String input = userInput.getText();
         String response = betty.getResponse(input);
         DialogBox userBox = DialogBox.getUserDialog(input, userImage);
-        DialogBox bettyBox = DialogBox.getBettyDialog(response, userImage);
+        DialogBox bettyBox = DialogBox.getBettyDialog(response, bettyImage);
         // Add dialog box into dialog container
         dialogContainer.getChildren().addAll(userBox, bettyBox);
         // Clear user input after creating dialog box

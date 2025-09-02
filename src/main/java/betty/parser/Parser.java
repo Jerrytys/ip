@@ -160,6 +160,11 @@ public class Parser {
                 throw new BettyException("Please provide a number to delete");
             }
             return new DeleteCommand(taskNum);
+        case FIND:
+            if (commandArgs.isEmpty()) {
+                throw new BettyException("Please include description to find");
+            }
+            return new FindCommand(commandArgs);
         default:
             throw new BettyException("Unknown Command");
         }

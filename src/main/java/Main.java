@@ -1,3 +1,4 @@
+import betty.Betty;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,6 +20,7 @@ public class Main extends Application {
     private Scene scene;
     // Loads User profile picture
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
+    private Betty betty = new Betty();
 
     @Override
     public void start(Stage stage) {
@@ -84,10 +86,12 @@ public class Main extends Application {
     }
 
     private void handleUserInput() {
-        // Create dialog box using user input
-        DialogBox dialogBox = new DialogBox(userInput.getText(), userImage);
+        String userText = userInput.getText();
+        String bettyText = betty.getResponse(userText);
+        DialogBox userBox = DialogBox.getUserDialog(userText, userImage);
+        DialogBox bettyBox = DialogBox.getBettyDialog(bettyText, userImage);
         // Add dialog box into dialog container
-        dialogContainer.getChildren().addAll(dialogBox);
+        dialogContainer.getChildren().addAll(userBox, bettyBox);
         // Clear user input after creating dialog box
         userInput.clear();
     }

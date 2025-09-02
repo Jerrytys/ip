@@ -19,6 +19,20 @@ public class Betty {
     private final Storage storage;
 
     /**
+     * Constructs a new Betty chatbot using basic filePath "./data/betty.txt"
+     */
+    public Betty() {
+        this.ui = new Ui();
+        this.storage = new Storage("./data/Betty.txt");
+        try {
+            // Loads storage data file to taskList
+            this.taskList = new TaskList(storage.load());
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+            this.taskList = new TaskList();
+        }
+    }
+    /**
      * Constructs a new Betty chatbot
      * @param filePath filePath for persistent storage of tasks using for storing/loading of task list
      */
@@ -53,6 +67,12 @@ public class Betty {
                 ui.printError(e.getMessage());
             }
         }
+    }
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Betty heard: " + input;
     }
     /**
      * The main entry point of the application.

@@ -24,17 +24,19 @@ public class MarkTaskCommand extends Command {
 
     /**
      * Executes the command by marking the task in task list and storage as completed, printing message from ui
+     *
      * @param taskList the list of tasks to operate on
-     * @param ui the user interface to display messages
-     * @param storage the storage manager to save changes
+     * @param ui       the user interface to display messages
+     * @param storage  the storage manager to save changes
+     * @return
      * @throws BettyException if execution fails
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
         Task task = taskList.get(this.taskNum);
         taskList.markDone(this.taskNum);
-        ui.markDone(taskList, this.taskNum);
         storage.store(taskList);
+        return ui.markDone(taskList, this.taskNum);
     }
     /**
      * Returns whether this command should terminate the program.

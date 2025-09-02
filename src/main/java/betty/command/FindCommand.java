@@ -23,15 +23,17 @@ public class FindCommand extends Command {
     /**
      * Executes the command to filter task list given filter string, creating a new filtered task list
      * and printing the display of filtered list by ui
+     *
      * @param taskList the list of tasks to operate on
-     * @param ui the user interface to display messages
-     * @param storage the storage manager to save changes
+     * @param ui       the user interface to display messages
+     * @param storage  the storage manager to save changes
+     * @return
      * @throws BettyException if execution fails
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
         TaskList filtered = taskList.find(filter);
-        ui.displayFilteredList(filtered);
+        return ui.displayFilteredList(filtered);
     }
 
     /**

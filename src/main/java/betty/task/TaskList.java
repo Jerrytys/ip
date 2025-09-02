@@ -53,20 +53,20 @@ public class TaskList {
     }
 
     /**
-     * Marks the task number in the list as completed
+     * Marks the task number in the list as completed starting from task 1 at index 0
      * @param number index of task to be marked as complete
      */
     public void markDone(int number) {
-        Task t = this.taskList.get(number);
+        Task t = this.taskList.get(number - 1);
         t.markAsDone();
     }
 
     /**
-     * Marks the task number in the list as not completed
+     * Marks the task number in the list as not completed starting from task 1 at index 0
      * @param number index of task to be marked as complete
      */
     public void markUndone(int number) {
-        Task t = this.taskList.get(number);
+        Task t = this.taskList.get(number - 1);
         t.markUndone();
     }
 

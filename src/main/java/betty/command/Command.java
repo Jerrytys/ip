@@ -49,11 +49,12 @@ public abstract class Command {
      * Executes the command using the given task list, UI, and storage.
      *
      * @param taskList the list of tasks to operate on
-     * @param ui the user interface to display messages
-     * @param storage the storage manager to save changes
+     * @param ui       the user interface to display messages
+     * @param storage  the storage manager to save changes
+     * @return
      * @throws BettyException if execution fails
      */
-    public abstract void execute(TaskList taskList, Ui ui, Storage storage) throws BettyException;
+    public abstract String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException;
     /**
      * Returns whether this command should terminate the program.
      *

@@ -2,6 +2,7 @@ package betty.task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import betty.exception.BettyException;
 
@@ -139,17 +140,13 @@ public class TaskList {
     }
 
     /**
-     * Returns the filtered task list after filtering by filter string
+     * Returns the filtered task list after filtering by filter string using streams
      * @param filter the filter string to filter the task list by
      * @return a new task list containing the filtered tasks
      */
     public TaskList find(String filter) {
-        List<Task> filtered = new ArrayList<>();
-        for (Task t : this.taskList) {
-            if (t.getDescription().contains(filter)) {
-                filtered.add(t);
-            }
-        }
-        return new TaskList(filtered);
+        Stream<Task> streamList = this.taskList.stream();
+        Stream<Task> filteredList = streamList.filter(t -> t.getDescription().contains(filter));
+        return new TaskList(filteredList.toList());
     }
 }

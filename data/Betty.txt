@@ -1,6 +1,2 @@
-T | 1 | read book
-T | 0 | read book
-D | 0 | go library  | Sep 02 2025
-T | 0 | read book
-T | 0 | read book
-E | 0 | dinner  | Feb 09 2025 | Feb 09 2025
+T | 0 | return book | MEDIUM
+T | 1 | read book | LOW

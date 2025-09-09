@@ -9,6 +9,7 @@ public class Task {
 
     protected boolean isDone;
     protected String description;
+    protected Priority priority;
 
     /**
      * Construct a new Task with the given description and isDone status
@@ -19,6 +20,7 @@ public class Task {
     public Task(String description, boolean isDone) {
         this.isDone = isDone;
         this.description = description;
+        this.priority = Priority.NONE;
     }
 
     /**
@@ -61,7 +63,13 @@ public class Task {
      */
     @Override
     public String toString() {
-        return "[" + this.getStatusIcon() + "] " + this.getDescription();
+        String priorityStr = this.priority.equals(Priority.NONE)
+                           ? ""
+                           : "priority: " + this.priority;
+        return String.format("[%s] %s %s",
+                this.getStatusIcon(),
+                this.getDescription(),
+                priorityStr);
     }
 
     /**
@@ -70,6 +78,15 @@ public class Task {
      */
     public String toSaveString() {
         String completed = this.isDone ? "1" : "0";
-        return completed + " | " + this.getDescription();
+        String priorityStr = this.priority.equals(Priority.NONE)
+                           ? ""
+                           : this.priority.toString();
+        return String.format("%s | %s | %s",
+                completed,
+                this.getDescription(),
+                priorityStr);
+    }
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 }

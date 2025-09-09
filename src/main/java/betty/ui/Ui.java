@@ -1,6 +1,7 @@
 package betty.ui;
 
 
+import betty.task.Priority;
 import betty.task.Task;
 import betty.task.TaskList;
 
@@ -73,5 +74,10 @@ public class Ui {
     public String displayFilteredList(TaskList filtered) {
         String message = "Here are the matching tasks in your list :\n";
         return printBox(message + filtered.toString());
+    }
+
+    public String setPriority(Task task, Priority priority) {
+        String message = "Set priority of this task as " + priority + "\n" + task.toString();
+        return printBox(message);
     }
 }

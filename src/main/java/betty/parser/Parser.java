@@ -112,14 +112,14 @@ public class Parser {
             try {
                 taskNum = Integer.parseInt(commandArgs);
             } catch (NumberFormatException e) {
-                throw new BettyException("Please provide a number to mark");
+                throw new BettyException("Please provide a valid number to mark");
             }
             return new MarkTaskCommand(taskNum);
         case UNMARK:
             try {
                 taskNum = Integer.parseInt(commandArgs);
             } catch (NumberFormatException e) {
-                throw new BettyException("Please provide a number to unmark");
+                throw new BettyException("Please provide a valid number to unmark");
             }
             return new UnmarkTaskCommand(taskNum);
         case TODO:
@@ -174,6 +174,26 @@ public class Parser {
                 throw new BettyException("Please include description to find");
             }
             return new FindCommand(commandArgs);
+        case PRIORITY:
+            if (commandArgs.isEmpty()) {
+                throw new BettyException("Please include a task number in list to set priority");
+            }
+            info = commandArgs.split(" ", 2);
+            if (info[1].isEmpty()) {
+                throw new BettyException("Please include a priority (low, medium, high) to set");
+            }
+            try {
+                taskNum = Integer.parseInt(info[0]);
+            } catch (NumberFormatException e) {
+                throw new BettyException("Please provide a valid number to mark");
+            }
+            String priorityStr = info[1];
+            if (!priorityStr.equalsIgnoreCase("low") && !priorityStr.equalsIgnoreCase("medium")
+                    && !priorityStr.equalsIgnoreCase("high")) {
+                throw new BettyException("Please use these priority values only (low, medium, high)");
+            }
+            Priority priority = Priority.getPriority(priorityStr);
+            return new SetPriorityCommand(taskNum, priority);
         default:
             throw new BettyException("Unknown Command");
         }

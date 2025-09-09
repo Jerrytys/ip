@@ -1,16 +1,16 @@
 package betty.task;
 
 public enum Priority {
-    LOW("LOW", 1),
-    MEDIUM("MEDIUM", 2),
-    HIGH("HIGH", 3),
-    NONE("NONE", 0);
+    LOW("LOW", 2),
+    MEDIUM("MEDIUM", 1),
+    HIGH("HIGH", 0),
+    NONE("NONE", 3);
 
     private final String label;
-    private final int level;
+    private final int rank;
     Priority(String label, int level) {
         this.label = label;
-        this.level = level;
+        this.rank = level;
     }
 
     public static Priority getPriority(String priority) {
@@ -24,5 +24,9 @@ public enum Priority {
     @Override
     public String toString() {
         return this.label;
+    }
+
+    public int getRank() {
+        return this.rank;
     }
 }

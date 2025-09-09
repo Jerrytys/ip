@@ -18,6 +18,7 @@ public class TaskList {
      * @param taskList the list of task to initialise with
      */
     public TaskList(List<Task> taskList) {
+        assert taskList != null : "taskList should not be null";
         this.taskList = taskList;
     }
     /**
@@ -50,6 +51,7 @@ public class TaskList {
      */
     public void addTask(Task task) {
         this.taskList.add(task);
+        assert taskList.contains(task) : "Task not added successfully";
     }
 
     /**
@@ -59,6 +61,7 @@ public class TaskList {
     public void markDone(int number) {
         Task t = this.taskList.get(number - 1);
         t.markAsDone();
+        assert t.getStatusIcon().equals("X") : "Task should be marked done";
     }
 
     /**
@@ -68,6 +71,7 @@ public class TaskList {
     public void markUndone(int number) {
         Task t = this.taskList.get(number - 1);
         t.markUndone();
+        assert t.getStatusIcon().equals(" ") : "Task should be marked undone";
     }
 
     /**

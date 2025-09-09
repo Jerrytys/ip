@@ -44,11 +44,12 @@ public class Parser {
      */
     public static Task parseTask(String taskString) throws BettyException {
         // Create parsing for different cases of task
-        String[] arguments = taskString.split(" \\| ", 5);
+        String[] arguments = taskString.split(" \\| ", 10);
         String type = arguments[0];
-        String completed = "0";
-        boolean isDone = false;
-        String description = "";
+        String completed;
+        boolean isDone;
+        String description;
+        Priority priority;
         LocalDate deadline;
         LocalDate to;
         LocalDate from;
@@ -58,20 +59,35 @@ public class Parser {
             completed = arguments[1];
             isDone = completed.equals("1");
             description = arguments[2];
-            return new Todo(description, isDone);
+            priority = Priority.getPriority(arguments[3]);
+            Todo todoTask = new Todo(description, isDone);
+            if (!priority.equals(Priority.NONE)) {
+                todoTask.setPriority(priority);
+            }
+            return todoTask;
         case "D":
             completed = arguments[1];
             isDone = completed.equals("1");
             description = arguments[2];
             deadline = parseDate(arguments[3]);
-            return new Deadline(description, deadline, isDone);
+            priority = Priority.getPriority(arguments[4]);
+            Deadline deadlineTask = new Deadline(description, deadline, isDone);
+            if (!priority.equals(Priority.NONE)) {
+                deadlineTask.setPriority(priority);
+            }
+            return deadlineTask;
         case "E":
             completed = arguments[1];
             isDone = completed.equals("1");
             description = arguments[2];
             from = parseDate(arguments[3]);
             to = parseDate(arguments[4]);
-            return new Event(description, from, to, isDone);
+            priority = Priority.getPriority(arguments[5]);
+            Event eventTask = new Event(description, from, to, isDone);
+            if (!priority.equals(Priority.NONE)) {
+                eventTask.setPriority(priority);
+            }
+            return eventTask;
         default:
             // TODO: THROW ERROR
             throw new IllegalArgumentException("Unknown task type spotted in file: " + type);
@@ -85,8 +101,6 @@ public class Parser {
      * @throws BettyException BettyException if there is error in parsing command
      */
     public static Command parseCommand(String command) throws BettyException {
-        // Create a ui class
-        Ui ui = new Ui();
         // Listen for 2 argument
         String[] arguments = command.split(" ", 2);
         // First string is the type of command

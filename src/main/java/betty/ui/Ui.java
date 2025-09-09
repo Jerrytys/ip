@@ -1,6 +1,5 @@
 package betty.ui;
 
-import java.util.Scanner;
 
 import betty.task.Task;
 import betty.task.TaskList;
@@ -10,23 +9,13 @@ import betty.task.TaskList;
  */
 public class Ui {
 
-    // Scanner to track input by user
-    private final Scanner input;
-
-    public Ui() {
-        this.input = new Scanner(System.in);
-    }
-
+    private static final String DIVIDER_LINE = "-----------------------------------";
     /**
      * Wraps a message between 2 lines, creating a box with message inside
      * @param message the message to be wrapped
      */
     public String printBox(String message) {
-        StringBuilder result = new StringBuilder();
-        result.append("-----------------------------------\n")
-                        .append(message).append("\n")
-                        .append("-----------------------------------");
-        return String.valueOf(result);
+        return DIVIDER_LINE + "\n" + message + "\n" + DIVIDER_LINE;
     }
     // Function to print greeting message
     public String greeting() {
@@ -71,10 +60,6 @@ public class Ui {
     }
     public String markUndone(TaskList taskList, int number) {
         return printBox("OK, I've marked this task as not done yet:\n" + taskList.get(number).toString());
-    }
-    // Read command from scanner
-    public String readCommand() {
-        return this.input.nextLine();
     }
     // Print error message
     public String printError(String message) {

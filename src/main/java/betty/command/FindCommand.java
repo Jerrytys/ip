@@ -27,7 +27,7 @@ public class FindCommand extends Command {
      * @param taskList the list of tasks to operate on
      * @param ui       the user interface to display messages
      * @param storage  the storage manager to save changes
-     * @return
+     * @return String representation of the result after executing the command
      * @throws BettyException if execution fails
      */
     @Override

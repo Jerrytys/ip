@@ -57,10 +57,10 @@ public class Ui {
     }
     // Message for mark done and undone
     public String markDone(TaskList taskList, int number) {
-        return printBox("Nice! I've marked this task as done:\n" + taskList.get(number).toString());
+        return printBox("Nice! I've marked this task as done:\n" + taskList.get(number - 1).toString());
     }
     public String markUndone(TaskList taskList, int number) {
-        return printBox("OK, I've marked this task as not done yet:\n" + taskList.get(number).toString());
+        return printBox("OK, I've marked this task as not done yet:\n" + taskList.get(number - 1).toString());
     }
     // Print error message
     public String printError(String message) {

@@ -120,7 +120,7 @@ public class TaskList {
         StringBuilder sb = new StringBuilder();
         int counter = 1;
         for (Task t : this.taskList) {
-            sb.append(String.valueOf(counter)).append(". ");
+            sb.append(counter).append(". ");
             sb.append(t.toString()).append("\n");
             counter++;
         }

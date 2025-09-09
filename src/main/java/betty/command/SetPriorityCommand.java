@@ -17,7 +17,7 @@ public class SetPriorityCommand extends Command {
     }
     @Override
     public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
-        Task task = taskList.get(this.taskNum);
+        Task task = taskList.get(this.taskNum - 1);
         task.setPriority(this.priority);
         return ui.setPriority(task, this.priority);
     }

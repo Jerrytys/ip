@@ -7,8 +7,6 @@ import betty.storage.Storage;
 import betty.task.TaskList;
 import betty.ui.Ui;
 
-import java.util.Scanner;
-
 /**
  * Represents the Betty object which is the task manager bot application
  * Betty manages the task list by parsing user commands, executing commands, and
@@ -49,27 +47,6 @@ public class Betty {
             this.taskList = new TaskList();
         }
     }
-
-    /**
-     * Runs the chatbot. Handles main loop of reading user command, parsing and executing commands
-     */
-    public void run() {
-        // track when to exit
-        boolean isExit = false;
-        // Greeting by chatbot
-        this.ui.greeting();
-
-        while (!isExit) {
-            try {
-                String fullCommand = this.ui.readCommand();
-                Command c = Parser.parseCommand(fullCommand);
-                c.execute(this.taskList, this.ui, this.storage);
-                isExit = c.isExit();
-            } catch (BettyException e) {
-                ui.printError(e.getMessage());
-            }
-        }
-    }
     /**
      * Generates a response for the user's chat message.
      */
@@ -85,13 +62,5 @@ public class Betty {
     }
     public String getGreeting() {
         return this.ui.greeting();
-    }
-    /**
-     * The main entry point of the application.
-     *
-     * @param args command-line arguments (unused)
-     */
-    public static void main(String[] args) {
-        new Betty("./data/Betty.txt").run();
     }
 }

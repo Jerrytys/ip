@@ -6,22 +6,9 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 
-import betty.command.AddDeadlineCommand;
-import betty.command.AddEventCommand;
-import betty.command.AddTodoCommand;
-import betty.command.ByeCommand;
-import betty.command.Command;
-import betty.command.DeleteCommand;
-import betty.command.FindCommand;
-import betty.command.ListCommand;
-import betty.command.MarkTaskCommand;
-import betty.command.UnmarkTaskCommand;
+import betty.command.*;
 import betty.exception.BettyException;
-import betty.task.Deadline;
-import betty.task.Event;
-import betty.task.Task;
-import betty.task.Todo;
-import betty.ui.Ui;
+import betty.task.*;
 
 /**
  * Represents a parser class that can parse strings into other useful objects
@@ -44,11 +31,12 @@ public class Parser {
      */
     public static Task parseTask(String taskString) throws BettyException {
         // Create parsing for different cases of task
-        String[] arguments = taskString.split(" \\| ", 5);
+        String[] arguments = taskString.split(" \\| ", 10);
         String type = arguments[0];
-        String completed = "0";
-        boolean isDone = false;
-        String description = "";
+        String completed;
+        boolean isDone;
+        String description;
+        Priority priority;
         LocalDate deadline;
         LocalDate to;
         LocalDate from;
@@ -58,20 +46,35 @@ public class Parser {
             completed = arguments[1];
             isDone = completed.equals("1");
             description = arguments[2];
-            return new Todo(description, isDone);
+            priority = Priority.getPriority(arguments[3]);
+            Todo todoTask = new Todo(description, isDone);
+            if (!priority.equals(Priority.NONE)) {
+                todoTask.setPriority(priority);
+            }
+            return todoTask;
         case "D":
             completed = arguments[1];
             isDone = completed.equals("1");
             description = arguments[2];
             deadline = parseDate(arguments[3]);
-            return new Deadline(description, deadline, isDone);
+            priority = Priority.getPriority(arguments[4]);
+            Deadline deadlineTask = new Deadline(description, deadline, isDone);
+            if (!priority.equals(Priority.NONE)) {
+                deadlineTask.setPriority(priority);
+            }
+            return deadlineTask;
         case "E":
             completed = arguments[1];
             isDone = completed.equals("1");
             description = arguments[2];
             from = parseDate(arguments[3]);
             to = parseDate(arguments[4]);
-            return new Event(description, from, to, isDone);
+            priority = Priority.getPriority(arguments[5]);
+            Event eventTask = new Event(description, from, to, isDone);
+            if (!priority.equals(Priority.NONE)) {
+                eventTask.setPriority(priority);
+            }
+            return eventTask;
         default:
             // TODO: THROW ERROR
             throw new IllegalArgumentException("Unknown task type spotted in file: " + type);
@@ -85,8 +88,6 @@ public class Parser {
      * @throws BettyException BettyException if there is error in parsing command
      */
     public static Command parseCommand(String command) throws BettyException {
-        // Create a ui class
-        Ui ui = new Ui();
         // Listen for 2 argument
         String[] arguments = command.split(" ", 2);
         // First string is the type of command
@@ -112,14 +113,14 @@ public class Parser {
             try {
                 taskNum = Integer.parseInt(commandArgs);
             } catch (NumberFormatException e) {
-                throw new BettyException("Please provide a number to mark");
+                throw new BettyException("Please provide a valid number to mark");
             }
             return new MarkTaskCommand(taskNum);
         case UNMARK:
             try {
                 taskNum = Integer.parseInt(commandArgs);
             } catch (NumberFormatException e) {
-                throw new BettyException("Please provide a number to unmark");
+                throw new BettyException("Please provide a valid number to unmark");
             }
             return new UnmarkTaskCommand(taskNum);
         case TODO:
@@ -174,6 +175,26 @@ public class Parser {
                 throw new BettyException("Please include description to find");
             }
             return new FindCommand(commandArgs);
+        case PRIORITY:
+            if (commandArgs.isEmpty()) {
+                throw new BettyException("Please include a task number in list to set priority");
+            }
+            info = commandArgs.split(" ", 2);
+            if (info[1].isEmpty()) {
+                throw new BettyException("Please include a priority (low, medium, high) to set");
+            }
+            try {
+                taskNum = Integer.parseInt(info[0]);
+            } catch (NumberFormatException e) {
+                throw new BettyException("Please provide a valid number to mark");
+            }
+            String priorityStr = info[1];
+            if (!priorityStr.equalsIgnoreCase("low") && !priorityStr.equalsIgnoreCase("medium")
+                    && !priorityStr.equalsIgnoreCase("high")) {
+                throw new BettyException("Please use these priority values only (low, medium, high)");
+            }
+            Priority priority = Priority.getPriority(priorityStr);
+            return new SetPriorityCommand(taskNum, priority);
         default:
             throw new BettyException("Unknown Command");
         }

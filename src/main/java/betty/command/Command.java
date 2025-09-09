@@ -22,6 +22,7 @@ public abstract class Command {
         EVENT,
         DELETE,
         FIND,
+        PRIORITY,
         UNKNOWN;
 
         /**
@@ -41,6 +42,7 @@ public abstract class Command {
             case "event" -> EVENT;
             case "delete" -> DELETE;
             case "find" -> FIND;
+            case "priority" -> PRIORITY;
             default -> UNKNOWN;
             };
         }

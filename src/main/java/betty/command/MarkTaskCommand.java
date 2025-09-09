@@ -33,7 +33,6 @@ public class MarkTaskCommand extends Command {
      */
     @Override
     public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
-        Task task = taskList.get(this.taskNum);
         taskList.markDone(this.taskNum);
         storage.store(taskList);
         return ui.markDone(taskList, this.taskNum);

@@ -1,6 +1,7 @@
 package betty.task;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -117,10 +118,11 @@ public class TaskList {
      */
     @Override
     public String toString() {
+        sortByPriority();
         StringBuilder sb = new StringBuilder();
         int counter = 1;
         for (Task t : this.taskList) {
-            sb.append(String.valueOf(counter)).append(". ");
+            sb.append(counter).append(". ");
             sb.append(t.toString()).append("\n");
             counter++;
         }
@@ -132,6 +134,7 @@ public class TaskList {
      * @return a formatted string with each individual task for storage
      */
     public String toSaveString() {
+        sortByPriority();
         StringBuilder sb = new StringBuilder();
         for (Task t : this.taskList) {
             sb.append(t.toSaveString()).append("\n");
@@ -148,5 +151,9 @@ public class TaskList {
         Stream<Task> streamList = this.taskList.stream();
         Stream<Task> filteredList = streamList.filter(t -> t.getDescription().contains(filter));
         return new TaskList(filteredList.toList());
+    }
+    public void sortByPriority() {
+        Comparator<Task> comparator = Comparator.comparingInt(t -> t.getPriority().getRank());
+        this.taskList.sort(comparator);
     }
 }

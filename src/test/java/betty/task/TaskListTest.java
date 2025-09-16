@@ -1,12 +1,14 @@
 package betty.task;
 
-import betty.exception.BettyException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import betty.exception.BettyException;
 
 // Test class for TaskList, test case generated using GitHub Copilot
 class TaskListTest {

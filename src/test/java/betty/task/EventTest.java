@@ -46,7 +46,7 @@ public class EventTest {
 
         String expectedFrom = from.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
         String expectedTo = to.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
-        String expected = "E | 1 | go library | " + expectedFrom + " | to: " + expectedTo;
+        String expected = String.format("E | 1 | go library |  | %s | %s", expectedFrom, expectedTo);
         assertEquals(expected, event.toSaveString());
     }
 

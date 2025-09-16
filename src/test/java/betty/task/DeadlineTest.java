@@ -40,7 +40,7 @@ public class DeadlineTest {
         Deadline deadline = new Deadline("submit report", date, true);
 
         String expectedDate = date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
-        String expected = "D | 1 | submit report | " + expectedDate;
+        String expected = String.format("D | 1 | submit report |  | %s", expectedDate);
         assertEquals(expected, deadline.toSaveString());
     }
 

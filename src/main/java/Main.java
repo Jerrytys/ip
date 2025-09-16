@@ -1,23 +1,24 @@
+import java.io.IOException;
+
 import betty.Betty;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
-
+/**
+ * The main entry point for the JavaFX application
+ */
 public class Main extends Application {
 
     private Betty betty = new Betty();
-
+    /**
+     * Starts the JavaFX application by setting up the primary stage
+     * with the main window defined in the FXML file.
+     *
+     * @param stage the primary stage provided by the JavaFX runtime
+     */
     @Override
     public void start(Stage stage) {
         //Setting up required components

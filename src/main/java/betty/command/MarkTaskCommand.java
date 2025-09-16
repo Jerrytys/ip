@@ -2,7 +2,6 @@ package betty.command;
 
 import betty.exception.BettyException;
 import betty.storage.Storage;
-import betty.task.Task;
 import betty.task.TaskList;
 import betty.ui.Ui;
 

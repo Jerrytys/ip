@@ -152,6 +152,10 @@ public class TaskList {
         Stream<Task> filteredList = streamList.filter(t -> t.getDescription().contains(filter));
         return new TaskList(filteredList.toList());
     }
+
+    /**
+     * Sorts the taskList by highest priority first
+     */
     public void sortByPriority() {
         Comparator<Task> comparator = Comparator.comparingInt(t -> t.getPriority().getRank());
         this.taskList.sort(comparator);

@@ -1,5 +1,8 @@
 package betty.task;
 
+/**
+ * Represents the Priority enum class that can get priority levels of the enums
+ */
 public enum Priority {
     LOW("LOW", 2),
     MEDIUM("MEDIUM", 1),

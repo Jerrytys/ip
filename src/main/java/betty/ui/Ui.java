@@ -26,10 +26,17 @@ public class Ui {
     public String goodbye() {
         return printBox("Bye. Hope to see you again soon!");
     }
-
+    /**
+     * Displays the list of tasks
+     * @param taskList the task list to be displayed
+     * @return the formatted string of the task list
+     */
     // Displays the list of tasks
     public String displayList(TaskList taskList) {
-        return printBox(taskList.toString());
+        if (taskList.size() == 0) {
+            return printBox("You have no tasks in your list.");
+        }
+        return printBox("Here are the task in your list: \n" + taskList.toString());
     }
 
     /**

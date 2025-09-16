@@ -36,7 +36,8 @@ public class Main extends Application {
             stage.show();
         } catch (IOException e) {
             // Show a user-friendly error dialog
-            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
+                                                    javafx.scene.control.Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to load the main window.");
             alert.setContentText(e.getMessage());

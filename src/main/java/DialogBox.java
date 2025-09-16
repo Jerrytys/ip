@@ -46,7 +46,12 @@ public class DialogBox extends HBox {
         setAlignment(Pos.TOP_LEFT);
         dialog.getStyleClass().add("reply-label");
     }
-
+    /**
+     * Creates a dialog box for user input.
+     * @param text The text to be displayed in the dialog box.
+     * @param img The image to be displayed in the dialog box.
+     * @return A DialogBox representing user input.
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
@@ -54,5 +59,16 @@ public class DialogBox extends HBox {
         var db = new DialogBox(s, i);
         db.flip();
         return db;
+    }
+    // Improved GUI methods by GitHub Copilot
+    // Add a method to set dialog style based on sender
+    public void setAsUser() {
+        this.setAlignment(Pos.TOP_RIGHT);
+        this.setStyle("-fx-background-color: #d1e7dd; -fx-background-radius: 15 0 15 15;");
+    }
+
+    public void setAsBot() {
+        this.setAlignment(Pos.TOP_LEFT);
+        this.setStyle("-fx-background-color: #f8d7da; -fx-background-radius: 0 15 15 15;");
     }
 }

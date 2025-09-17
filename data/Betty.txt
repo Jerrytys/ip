@@ -1,2 +1,2 @@
-T | 0 | return book | MEDIUM
-T | 1 | read book | LOW
+T | 0 | return book
+T | 1 | read book

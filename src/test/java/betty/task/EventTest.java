@@ -62,4 +62,31 @@ public class EventTest {
             new Event("invalid event", from, to, false);
         });
     }
+    // Test Event toSaveString with priority
+    @Test
+    public void testEvent_withPriority_toSaveString() throws BettyException {
+        LocalDate from = LocalDate.of(2025, 9, 1);
+        LocalDate to = LocalDate.of(2025, 9, 5);
+        Event event = new Event("go library", from, to, false);
+        event.setPriority(Priority.HIGH);
+
+        String expectedFrom = from.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        String expectedTo = to.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        String expected = String.format("E | 0 | go library | HIGH | %s | %s", expectedFrom, expectedTo);
+        assertEquals(expected, event.toSaveString());
+    }
+
+    // Test Event toString with priority
+    @Test
+    public void testEvent_withPriority_toString() throws BettyException {
+        LocalDate from = LocalDate.of(2025, 9, 1);
+        LocalDate to = LocalDate.of(2025, 9, 5);
+        Event event = new Event("go library", from, to, false);
+        event.setPriority(Priority.HIGH);
+
+        String expectedFrom = from.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        String expectedTo = to.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        String expected = "[E][ ] go library (Priority: HIGH)(from: " + expectedFrom + " to: " + expectedTo + ")";
+        assertEquals(expected, event.toString());
+    }
 }

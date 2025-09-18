@@ -56,4 +56,33 @@ public class DeadlineTest {
             new Deadline("invalid task", invalidDate, false);
         });
     }
+    @Test
+    public void testDeadline_withPriority_parsingAndSaving() throws BettyException {
+        LocalDate date = LocalDate.of(2025, 9, 16);
+        Deadline deadline = new Deadline("return book", date, false);
+        deadline.setPriority(Priority.HIGH);
+
+        // Check toSaveString includes the priority in the correct position
+        String expectedDate = date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        String expectedSave = String.format("D | 0 | return book | HIGH | %s", expectedDate);
+        assertEquals(expectedSave, deadline.toSaveString());
+
+        // Now test parsing from storage string
+        String storageString = expectedSave;
+        Deadline parsed = (Deadline) Parser.parseTask(storageString);
+        assertEquals("return book", parsed.getDescription());
+        assertEquals(date, parsed.by);
+        assertFalse(parsed.isDone());
+        assertEquals(Priority.HIGH, parsed.getPriority());
+    }
+    @Test
+    public void testDeadline_withPriority_toString() throws BettyException {
+        LocalDate date = LocalDate.of(2025, 9, 16);
+        Deadline deadline = new Deadline("return book", date, false);
+        deadline.setPriority(Priority.HIGH);
+
+        String expectedDate = date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        String expected = "[D][ ] return book (Priority: HIGH)(by: " + expectedDate + ")";
+        assertEquals(expected, deadline.toString());
+    }
 }

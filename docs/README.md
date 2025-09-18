@@ -1,7 +1,6 @@
 # Betty User Guide
 
-// Product screenshot goes here
-
+![Ui.png](Ui.png)
 **Betty** is a simple, interactive task manager chatbot built in Java. 
 It helps you keep track of your todos, deadlines, and events, with support for priorities and persistent storage. 
 With Betty, you can easily manage your tasks from the command line with a simple, 

@@ -66,7 +66,7 @@ public class Task {
     public String toString() {
         String priorityStr = this.priority.equals(Priority.NONE)
                            ? ""
-                           : "priority: " + this.priority;
+                           : String.format("(Priority: %s)", this.priority);
         return String.format("[%s] %s %s",
                 this.getStatusIcon(),
                 this.getDescription(),

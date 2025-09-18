@@ -70,8 +70,8 @@ public class Parser {
     private static Deadline parseDeadline(String[] args) throws BettyException {
         boolean isDone = parseIsDone(args[1]);
         String description = args[2];
-        LocalDate deadline = parseDate(args[3]);
-        Priority priority = Priority.getPriority(args[4]);
+        Priority priority = Priority.getPriority(args[3]);
+        LocalDate deadline = parseDate(args[4]);
         Deadline deadlineTask = new Deadline(description, deadline, isDone);
         setPriorityIfPresent(deadlineTask, priority);
         return deadlineTask;
@@ -80,9 +80,9 @@ public class Parser {
     private static Event parseEvent(String[] args) throws BettyException {
         boolean isDone = parseIsDone(args[1]);
         String description = args[2];
-        LocalDate from = parseDate(args[3]);
-        LocalDate to = parseDate(args[4]);
-        Priority priority = Priority.getPriority(args[5]);
+        Priority priority = Priority.getPriority(args[3]);
+        LocalDate from = parseDate(args[4]);
+        LocalDate to = parseDate(args[5]);
         Event eventTask = new Event(description, from, to, isDone);
         setPriorityIfPresent(eventTask, priority);
         return eventTask;

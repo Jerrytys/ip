@@ -35,7 +35,7 @@ public class Deadline extends Task {
     public String toString() {
         // Format time to pattern MMM dd yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
-        return "[D]" + super.toString() + "(by: " + this.by.format(dateFormat) + ")";
+        return String.format("[D]%s(by: %s)", super.toString(), this.by.format(dateFormat));
     }
     /**
      * Returns the string representation of the deadline task for storage saving purposes
@@ -46,6 +46,6 @@ public class Deadline extends Task {
         // Format time to pattern MMM dd yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
         String doneValue = super.isDone() ? "1" : "0";
-        return "D | " + super.toSaveString() + " | " + this.by.format(dateFormat);
+        return String.format("D | %s | %s", super.toSaveString(), this.by.format(dateFormat));
     }
 }

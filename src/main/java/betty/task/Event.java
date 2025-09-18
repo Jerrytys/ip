@@ -38,9 +38,9 @@ public class Event extends Task {
     public String toString() {
         // Format time to pattern MMM dd yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
-        return "[E]" + super.toString()
-                + "(from: " + this.from.format(dateFormat)
-                + " to: " + this.to.format(dateFormat) + ")";
+        return String.format("[E]%s(from: %s to: %s)", super.toString(),
+                                                        this.from.format(dateFormat),
+                                                        this.to.format(dateFormat));
     }
     /**
      * Returns the string representation of the duration task for storage saving purposes
@@ -50,7 +50,8 @@ public class Event extends Task {
     public String toSaveString() {
         // Format time to pattern MMM dd yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
-        return "E | " + super.toSaveString() + " | " + this.from.format(dateFormat)
-                + " | " + this.to.format(dateFormat);
+        return String.format("E | %s | %s | %s", super.toSaveString(),
+                                                        this.from.format(dateFormat),
+                                                        this.to.format(dateFormat));
     }
 }

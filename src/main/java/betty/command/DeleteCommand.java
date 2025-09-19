@@ -33,7 +33,10 @@ public class DeleteCommand extends Command {
      */
     @Override
     public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
-        Task task = taskList.get(taskNum);
+        if (this.taskNum > taskList.size() || this.taskNum <= 0) {
+            throw new BettyException("OOPS!!! The task number provided is invalid.");
+        }
+        Task task = taskList.get(taskNum - 1);
         taskList.deleteTask(this.taskNum);
         storage.store(taskList);
         return ui.deleteTask(task, taskList);

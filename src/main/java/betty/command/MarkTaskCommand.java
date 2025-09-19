@@ -32,6 +32,9 @@ public class MarkTaskCommand extends Command {
      */
     @Override
     public String execute(TaskList taskList, Ui ui, Storage storage) throws BettyException {
+        if (this.taskNum > taskList.size() || this.taskNum <= 0) {
+            throw new BettyException("OOPS!!! The task number provided is invalid.");
+        }
         taskList.markDone(this.taskNum);
         storage.store(taskList);
         return ui.markDone(taskList, this.taskNum);

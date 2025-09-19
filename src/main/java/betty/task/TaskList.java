@@ -108,8 +108,7 @@ public class TaskList {
      * @param number index of the task to be deleted
      */
     public void deleteTask(int number) {
-        Task task = this.taskList.get(number);
-        this.taskList.remove(number);
+        this.taskList.remove(number - 1);
     }
 
     /**

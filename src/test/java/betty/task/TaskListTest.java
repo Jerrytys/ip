@@ -53,7 +53,7 @@ class TaskListTest {
         taskList.addTodo(new Todo("Read book", false));
         taskList.addTodo(new Todo("Write code", false));
         assertEquals(2, taskList.size());
-        taskList.deleteTask(0);
+        taskList.deleteTask(1);
         assertEquals(1, taskList.size());
         assertEquals("Write code", taskList.get(0).getDescription());
     }

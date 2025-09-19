@@ -79,6 +79,9 @@ public class Ui {
      * @param filtered filtered task list to be displayed
      */
     public String displayFilteredList(TaskList filtered) {
+        if (filtered.size() == 0) {
+            return printBox("No matching tasks found in your list.");
+        }
         String message = "Here are the matching tasks in your list :\n";
         return printBox(message + filtered.toString());
     }

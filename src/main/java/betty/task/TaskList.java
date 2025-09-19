@@ -21,7 +21,7 @@ public class TaskList {
      */
     public TaskList(List<Task> taskList) {
         assert taskList != null : "taskList should not be null";
-        this.taskList = taskList;
+        this.taskList = new ArrayList<>(taskList);
     }
     /**
      * Constructs a TaskList with an empty list of tasks

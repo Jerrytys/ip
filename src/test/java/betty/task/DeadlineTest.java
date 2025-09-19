@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import betty.Betty;
 import org.junit.jupiter.api.Test;
 
 import betty.exception.BettyException;
@@ -51,7 +52,7 @@ public class DeadlineTest {
     // Test invalid date parsing throws exception
     @Test
     public void testDeadline_invalidDate_exception() {
-        assertThrows(DateTimeParseException.class, () -> {
+        assertThrows(BettyException.class, () -> {
             LocalDate invalidDate = Parser.parseDate("invalid-date");
             new Deadline("invalid task", invalidDate, false);
         });

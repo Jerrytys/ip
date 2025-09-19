@@ -56,7 +56,7 @@ public class EventTest {
     // Test invalid date parsing throws exception
     @Test
     public void testEvent_invalidDate_exception() {
-        assertThrows(DateTimeParseException.class, () -> {
+        assertThrows(BettyException.class, () -> {
             LocalDate from = Parser.parseDate("invalid-from-date");
             LocalDate to = Parser.parseDate("invalid-to-date");
             new Event("invalid event", from, to, false);

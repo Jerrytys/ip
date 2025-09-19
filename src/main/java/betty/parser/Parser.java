@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 
+import betty.Betty;
 import betty.command.AddDeadlineCommand;
 import betty.command.AddEventCommand;
 import betty.command.AddTodoCommand;
@@ -199,7 +200,7 @@ public class Parser {
      * @param date String representation of date provided by user
      * @return LocalDate object after string representation of date has been parsed
      */
-    public static LocalDate parseDate(String date) {
+    public static LocalDate parseDate(String date) throws BettyException {
         for (DateTimeFormatter formatter : FORMATTERS) {
             try {
                 return LocalDate.parse(date, formatter);
@@ -208,6 +209,6 @@ public class Parser {
             }
         }
         // if no format matches, invalid date format;
-        throw new DateTimeParseException("Please input a valid date format", date, 0);
+        throw new BettyException("Please input a valid date format: MM-DD-YYYY");
     }
 }

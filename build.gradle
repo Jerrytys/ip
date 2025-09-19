@@ -61,9 +61,4 @@ shadowJar {
 run{
     standardInput = System.in
     enableAssertions = true
-    jvmArgs = [
-            "--module-path", classpath.asPath,
-            "--add-modules", "javafx.controls,javafx.fxml",
-            "-Dprism.order=sw" // optional: forces software rendering to avoid D3D crashes
-    ]
 }

@@ -6,9 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
-import betty.Betty;
 import org.junit.jupiter.api.Test;
 
 import betty.exception.BettyException;

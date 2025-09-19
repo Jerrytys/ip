@@ -6,7 +6,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 
-import betty.Betty;
 import betty.command.AddDeadlineCommand;
 import betty.command.AddEventCommand;
 import betty.command.AddTodoCommand;
